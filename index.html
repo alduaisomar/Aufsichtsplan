@@ -575,7 +575,7 @@
                 return;
             }
 
-            resultsCount.textContent = `Found ${results.length} assignment${results.length !== 1 ? 's' : ''} for "${query}"`;
+            resultsCount.textContent = ` ${results.length} Aufsicht gefunden  ${results.length !== 1 ? 's' : ''} für "${query}"`;
             
             resultsList.innerHTML = results.map(item => `
                 <div class="result-item">
@@ -691,12 +691,12 @@
         }
 
         function showNoResults(query) {
-            resultsCount.textContent = `No assignments found for "${query}"`;
+            resultsCount.textContent = `Keine Aufsichten für "${query}" gefunden`;
             resultsList.innerHTML = `
                 <div class="no-results">
                     <div class="no-results-icon">🤷‍♂️</div>
-                    <h3>No assignments found</h3>
-                    <p>No proctor found with abbreviation "${query}"</p>
+                    <h3>Keine Aufsichten gefunden</h3>
+                    <p>Kein Aufsichtsperson mit der Namenskürzel gefunden "${query}"</p>
                 </div>
             `;
         }
