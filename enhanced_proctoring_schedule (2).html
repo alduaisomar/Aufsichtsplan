@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prüfungsaufsichtsplan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .header-logo {
+            flex: 0 0 auto;
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
+            margin: 0 20px;
+        }
+
+        .header-right {
+            flex: 0 0 auto;
+        }
+
+        .logo-image, .right-image {
+            max-height: 60px;
+            max-width: 120px;
+            height: auto;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-image:hover, .right-image:hover {
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .fallback-icon {
+            font-size: 3rem;
+            opacity: 0.8;
+        }
+
+        .search-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #searchInput:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .clear-btn, .export-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .clear-btn:hover, .export-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .export-btn:disabled:hover {
+            background: rgba(255,255,255,0.2);
+            transform: none;
+        }
+
+        .results-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-item:hover {
+            background: #f8f9ff;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-icon {
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            min-width: 80px;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .date-group {
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .date-group:last-child {
+            border-bottom: none;
+        }
+
+        .date-header {
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #e0e4ff;
+        }
+
+        .date-icon {
+            font-size: 1.5rem;
+        }
+
+        .date-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        .date-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .date-items .result-item.compact {
+            padding: 15px 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-center {
+                margin: 0;
+                order: -1;
+            }
+
+            .logo-image, .right-image {
+                max-height: 50px;
+                max-width: 100px;
+            }
+            
+            .search-container {
+                padding: 20px;
+            }
+            
+            .result-details {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .header-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .clear-btn, .export-btn {
+                padding: 10px 16px;
+                font-size: 0.95rem;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .export-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .export-notification.show {
+            transform: translateX(0);
+        }
+
+        .export-notification.error {
+            background: #dc3545;
+        }
+
+        /* Enhanced styles for better image export */
+        .export-ready {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+
+        .export-ready * {
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: optimizeLegibility !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="header-logo">
+                    <img src="your-logo.png" alt="Logo" class="logo-image" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span class="fallback-icon" style="display: none;">GJU</span>
+                </div>
+                
+                <div class="header-center">
+                  <h1>Aufsichtsplan</h1>
+                    <p>Suche nach deinen Aufsichtsdetails, indem du dein Namenskürzel eingibst.</p>
+                </div>
+                
+                <div class="header-right">
+                    <img src="your-right-image.png" alt="Right Image" class="right-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span class="fallback-icon" style="display: none;">GLC</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Namenskürzel der Aufsichtsperson eingeben (z.B. oad, MQ, Aas)...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="results-header">
+                <div class="results-count" id="resultsCount">Bereit zum Suchen</div>
+                <div class="header-buttons">
+                    <button class="clear-btn" id="clearBtn">
+                        <span>🔄</span>
+                        <span>Suche zurücksetzen</span>
+                    </button>
+                    <button class="export-btn" id="exportBtn" disabled>
+                        <span>📷</span>
+                        <span>Als Bild speichern</span>
+                    </button>
+                </div>
+            </div>
+            <div class="results-list" id="resultsList">
+                <div class="welcome-message">
+                    <div class="welcome-icon">👋</div>
+                   <h3>Herzlich willkommen!</h3>
+                    <p>Gib die Abkürzung GJU ein, um den vollständingen Prüfungsplan zu sehen.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="export-notification" id="exportNotification"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const proctorData = [
+            { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Samar Mjalli', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Zain Abu-Taleb', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Andreas Chehadi', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Bele Günther', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Elaf Al-Najafi', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Tarik Boutaib', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Ehtisabliallah Mohyaldeen', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Husein Al-Neimat', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Tala Mesmar', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Hamzah Murshed', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Luisa Pieri', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Mahmoud Elazzazi', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Margarethe Nofal', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Zakaria El Guerda', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Mahmoud Jarrar', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Monika Hryniewicka', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Mutaz Hassan', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Jaroslav Patus', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Nazeeh Awad', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Dima Amr', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Hanna Schweitzer', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Liza Balker', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Lobna Jlidi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Melanie Asdoodi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Ruba Alshawabkeh', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Samer Al-Zghoul', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Silvie Zeller', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Yassine Tawart', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Abderrahmane Ardem', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Lemiaa Mohmed', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Osman Khalile', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Othmane Cherrate', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Ashraf Saadeya', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Barita Sitanggang', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Elisa Faltermeier', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Hamzah Murshed', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Ramze Al-Ozieb', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Salma Ahmad', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Amin Mejdoubi', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' }
+        ];
+
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        const resultsList = document.getElementById('resultsList');
+        const resultsCount = document.getElementById('resultsCount');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const exportNotification = document.getElementById('exportNotification');
+
+        function searchProctor(query) {
+            if (!query.trim()) {
+                showWelcomeMessage();
+                exportBtn.disabled = true;
+                return;
+            }
+
+            showLoading();
+            exportBtn.disabled = true;
+
+            setTimeout(() => {
+                let filteredResults;
+                
+                if (query.toLowerCase() === 'gju') {
+                    filteredResults = proctorData.filter(item => 
+                        item.proctor && item.proctor.trim() !== ''
+                    ).sort((a, b) => {
+                        const dateA = parseDateForSorting(a.date);
+                        const dateB = parseDateForSorting(b.date);
+                        
+                        if (dateA !== dateB) {
+                            return dateA - dateB;
+                        }
+                        
+                        return a.session.localeCompare(b.session);
+                    });
+                    
+                    displayFullSchedule(filteredResults, query);
+                } else {
+                    filteredResults = proctorData.filter(item => 
+                        item.proctor && 
+                        item.proctor.trim() !== '' && 
+                        item.proctor.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    displayResults(filteredResults, query);
+                }
+
+                exportBtn.disabled = filteredResults.length === 0;
+            }, 200);
+        }
+
+        function parseDateForSorting(dateStr) {
+            const months = {
+                'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+                'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
+            };
+            
+            const parts = dateStr.toLowerCase().replace('.', '').split(' ');
+            const day = parseInt(parts[0]);
+            const month = months[parts[1]] || 8;
+            
+            return month * 100 + day;
+        }
+
+        function displayResults(results, query) {
+            if (results.length === 0) {
+                showNoResults(query);
+                return;
+            }
+
+            resultsCount.textContent = `Found ${results.length} assignment${results.length !== 1 ? 's' : ''} for "${query}"`;
+            
+            resultsList.innerHTML = results.map(item => `
+                <div class="result-item">
+                    <div class="result-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">👤</span>
+                            <span class="detail-label">Proctor:</span>
+                            <span class="detail-value">${highlightMatch(item.proctor, query)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span class="detail-label">Lab:</span>
+                            <span class="detail-value">${item.lab}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📅</span>
+                            <span class="detail-label">Date:</span>
+                            <span class="detail-value">${item.date}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🎓</span>
+                            <span class="detail-label">Session:</span>
+                            <span class="detail-value">${item.session}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayFullSchedule(results, query) {
+            resultsCount.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <span>📋 Complete Schedule - ${results.length} total assignments</span>
+                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; font-size: 0.9rem;">Sorted chronologically</span>
+                </div>
+            `;
+            
+            const groupedByDate = results.reduce((groups, item) => {
+                const date = item.date;
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(item);
+                return groups;
+            }, {});
+
+            const sortedDates = Object.keys(groupedByDate).sort((a, b) => 
+                parseDateForSorting(a) - parseDateForSorting(b)
+            );
+
+            resultsList.innerHTML = sortedDates.map(date => {
+                const dayItems = groupedByDate[date];
+                return `
+                    <div class="date-group">
+                        <div class="date-header">
+                            <span class="date-icon">📅</span>
+                            <h3 class="date-title">${date}</h3>
+                            <span class="date-count">${dayItems.length} assignments</span>
+                        </div>
+                        <div class="date-items">
+                            ${dayItems.map(item => `
+                                <div class="result-item compact">
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-icon">👤</span>
+                                            <span class="detail-label">Proctor:</span>
+                                            <span class="detail-value">${item.proctor}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">📍</span>
+                                            <span class="detail-label">Lab:</span>
+                                            <span class="detail-value">${item.lab}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">🎓</span>
+                                            <span class="detail-label">Session:</span>
+                                            <span class="detail-value">${item.session}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">$1</mark>');
+        }
+
+        function showWelcomeMessage() {
+            resultsCount.textContent = 'Ready to search';
+            resultsList.innerHTML = `
+                <div class="welcome-message">
+                    <div class="welcome-icon">👋</div>
+                    <h3>Herzlich willkommen!</h3>
+                    <p>Gib die Abkürzung GJU ein, um den vollständingen Prüfungsplan zu sehen.</p>
+                </div>
+            `;
+        }
+
+        function showLoading() {
+            resultsCount.textContent = 'Searching...';
+            resultsList.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Searching for assignments...</p>
+                </div>
+            `;
+        }
+
+        function showNoResults(query) {
+            resultsCount.textContent = `No assignments found for "${query}"`;
+            resultsList.innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">🤷‍♂️</div>
+                    <h3>No assignments found</h3>
+                    <p>No proctor found with abbreviation "${query}"</p>
+                </div>
+            `;
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            showWelcomeMessage();
+            exportBtn.disabled = true;
+            searchInput.focus();
+        }
+
+        function exportResultAsImage() {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsList = document.getElementById('resultsList');
+            const exportBtn = document.getElementById('exportBtn');
+            
+            exportBtn.disabled = true;
+            exportBtn.innerHTML = '<span>⏳</span><span>Generating...</span>';
+            
+            // Store original styles
+            const originalMaxHeight = resultsList.style.maxHeight;
+            const originalOverflow = resultsList.style.overflow;
+            
+            // Temporarily remove height restrictions to capture all content
+            resultsList.style.maxHeight = 'none';
+            resultsList.style.overflow = 'visible';
+            
+            // Scroll to top and wait for rendering
+            window.scrollTo(0, 0);
+            resultsContainer.scrollTop = 0;
+            
+            setTimeout(() => {
+                const options = {
+                    backgroundColor: '#ffffff',
+                    scale: 3, // Higher scale for better quality
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    letterRendering: true, // Better text rendering
+                    onclone: function(clonedDoc) {
+                        // Enhance the cloned document for better rendering
+                        const clonedResultsList = clonedDoc.getElementById('resultsList');
+                        if (clonedResultsList) {
+                            clonedResultsList.style.maxHeight = 'none';
+                            clonedResultsList.style.overflow = 'visible';
+                        }
+                        
+                        // Add comprehensive styling to ensure proper rendering
+                        const style = clonedDoc.createElement('style');
+                        style.textContent = `
+                            * {
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+                                -webkit-font-smoothing: antialiased !important;
+                                -moz-osx-font-smoothing: grayscale !important;
+                                text-rendering: optimizeLegibility !important;
+                            }
+                            
+                            .results-header {
+                                background: #667eea !important;
+                                background: -webkit-linear-gradient(135deg, #667eea, #764ba2) !important;
+                                background: linear-gradient(135deg, #667eea, #764ba2) !important;
+                                color: white !important;
+                            }
+                            
+                            .date-header {
+                                background: #f8f9ff !important;
+                                background: -webkit-linear-gradient(135deg, #f8f9ff, #e8ecff) !important;
+                                background: linear-gradient(135deg, #f8f9ff, #e8ecff) !important;
+                            }
+                            
+                            .date-title {
+                                color: #667eea !important;
+                            }
+                            
+                            .date-count {
+                                background: #667eea !important;
+                                color: white !important;
+                            }
+                            
+                            .detail-value {
+                                color: #333 !important;
+                                font-weight: 500 !important;
+                            }
+                            
+                            .detail-label {
+                                color: #666 !important;
+                                font-weight: 600 !important;
+                            }
+                            
+                            .clear-btn, .export-btn {
+                                background: rgba(255,255,255,0.2) !important;
+                                color: white !important;
+                                border: 1px solid rgba(255,255,255,0.3) !important;
+                            }
+                            
+                            .result-item {
+                                border-bottom: 1px solid #f0f0f0 !important;
+                            }
+                            
+                            .results-container {
+                                background: white !important;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+                            }
+                        `;
+                        clonedDoc.head.appendChild(style);
+                        
+                        // Force color rendering for all text elements
+                        const allTextElements = clonedDoc.querySelectorAll('*');
+                        allTextElements.forEach(el => {
+                            const computedStyle = window.getComputedStyle(el);
+                            if (computedStyle.color) {
+                                el.style.color = computedStyle.color;
+                            }
+                            if (computedStyle.backgroundColor && computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                                el.style.backgroundColor = computedStyle.backgroundColor;
+                            }
+                        });
+                    }
+                };
+
+                html2canvas(resultsContainer, options).then(canvas => {
+                    // Restore original styles
+                    resultsList.style.maxHeight = originalMaxHeight;
+                    resultsList.style.overflow = originalOverflow;
+                    
+                    // Enhance canvas quality
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
+                    // Create and download the image with maximum quality
+                    const link = document.createElement('a');
+                    const searchQuery = searchInput.value.trim() || 'schedule';
+                    const timestamp = new Date().toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '-');
+                    link.download = `aufsichtsplan_${searchQuery}_${timestamp}.png`;
+                    
+                    // Use maximum PNG quality
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showNotification('✅ High-quality image saved successfully!', 'success');
+                    
+                    exportBtn.disabled = false;
+                    exportBtn.innerHTML = '<span>📷</span><span>Als Bild speichern</span>';
+                    
+                }).catch(error => {
+                    console.error('Error generating image:', error);
+                    
+                    // Restore original styles
+                    resultsList.style.maxHeight = originalMaxHeight;
+                    resultsList.style.overflow = originalOverflow;
+                    
+                    showNotification('❌ Error saving image. Please try again.', 'error');
+                    
+                    exportBtn.disabled = false;
+                    exportBtn.innerHTML = '<span>📷</span><span>Als Bild speichern</span>';
+                });
+            }, 300); // Slightly longer delay for better rendering
+        }
+
+        function showNotification(message, type = 'success') {
+            exportNotification.textContent = message;
+            exportNotification.className = `export-notification ${type} show`;
+            
+            setTimeout(() => {
+                exportNotification.classList.remove('show');
+            }, 3000);
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+            
+            searchTimeout = setTimeout(() => {
+                searchProctor(query);
+            }, 300);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                searchProctor(e.target.value.trim());
+            }
+        });
+
+        clearBtn.addEventListener('click', clearSearch);
+        exportBtn.addEventListener('click', exportResultAsImage);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            searchInput.focus();
+            exportBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
