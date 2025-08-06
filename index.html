@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF8C00 0%, #07b0f3 100%);
             min-height: 100vh;
             color: #333;
         }
@@ -106,7 +106,7 @@
         }
 
         #searchInput:focus {
-            border-color: #667eea;
+            border-color: #FF8C00;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -127,7 +127,7 @@
         }
 
         .results-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #FF8C00, #07b0f3);
             color: white;
             padding: 20px;
             text-align: center;
@@ -248,7 +248,7 @@
         .welcome-icon {
             font-size: 4rem;
             margin-bottom: 20px;
-            color: #667eea;
+            color: #FF8C00;
         }
 
         .date-group {
@@ -273,14 +273,14 @@
         }
 
         .date-title {
-            color: #667eea;
+            color: #FF8C00;
             font-size: 1.3rem;
             margin: 0;
             flex: 1;
         }
 
         .date-count {
-            background: #667eea;
+            background: #FF8C00;
             color: white;
             padding: 4px 12px;
             border-radius: 15px;
@@ -467,7 +467,7 @@
         .loading {
             text-align: center;
             padding: 40px 20px;
-            color: #667eea;
+            color: #FF8C00;
         }
 
         .loading-spinner {
@@ -475,7 +475,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #FF8C00;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 15px;
@@ -568,7 +568,7 @@
                 <div class="welcome-message">
                     <div class="welcome-icon">👋</div>
                    <h3>Herzlich willkommen!</h3>
-                    <p>Gib die Abkürzung GJU ein, um den vollständingen Prüfungsplan zu sehen.</p>
+                    <p>Gib die Abkürzung ... ein, um den vollständingen Prüfungsplan zu sehen.</p>
                 </div>
             </div>
         </div>
@@ -582,7 +582,27 @@
         const REQUIRED_LOAD = 10; // Change this number based on semester requirements
         
         const proctorData = [
-           
+           { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Amin Mejdoubi', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+
             { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Samar Mjalli', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
@@ -783,7 +803,7 @@
                             </div>
                         </div>
                         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
-                            <h4 style="margin-bottom: 10px; color: #667eea; font-size: 0.95rem;">Aufsichten (${proctorAssignments.length}):</h4>
+                            <h4 style="margin-bottom: 10px; color: ##FF8C00; font-size: 0.95rem;">Aufsichten (${proctorAssignments.length}):</h4>
                             ${proctorAssignments.map(item => `
                                 <div style="padding: 8px 0; border-bottom: 1px solid #f8f9fa; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 0.9rem;">
                                     <div><span style="color: #666;">📍</span> ${item.lab}</div>
@@ -956,9 +976,9 @@
                             }
                             
                             .results-header {
-                                background: #667eea !important;
-                                background: -webkit-linear-gradient(135deg, #667eea, #764ba2) !important;
-                                background: linear-gradient(135deg, #667eea, #764ba2) !important;
+                                background: ##FF8C00 !important;
+                                background: -webkit-linear-gradient(135deg, #FF8C00, #87CEEB) !important;
+                                background: linear-gradient(135deg, #FF8C00, #87CEEB) !important;
                                 color: white !important;
                             }
                             
@@ -969,11 +989,11 @@
                             }
                             
                             .date-title {
-                                color: #667eea !important;
+                                color: #FF8C00 !important;
                             }
                             
                             .date-count {
-                                background: #667eea !important;
+                                background: #FF8C00 !important;
                                 color: white !important;
                             }
                             
