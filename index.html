@@ -292,6 +292,128 @@
             padding: 15px 20px;
         }
 
+        /* Load indicator styles */
+        .load-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .progress-circle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: #495057;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .progress-fill.low {
+            background: linear-gradient(0deg, #dc3545, #f8d7da);
+        }
+
+        .progress-fill.medium {
+            background: linear-gradient(0deg, #ffc107, #fff3cd);
+        }
+
+        .progress-fill.high {
+            background: linear-gradient(0deg, #28a745, #d4edda);
+        }
+
+        .progress-fill.complete {
+            background: linear-gradient(0deg, #20c997, #d1ecf1);
+        }
+
+        .progress-text {
+            position: relative;
+            z-index: 2;
+            font-size: 9px;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .load-details {
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .load-fraction {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .load-percentage {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .load-status {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .load-status.low { color: #dc3545; }
+        .load-status.medium { color: #ffc107; }
+        .load-status.high { color: #28a745; }
+        .load-status.complete { color: #20c997; }
+
+        .thermometer {
+            width: 20px;
+            height: 40px;
+            background: #e9ecef;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thermometer-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transition: all 0.6s ease;
+            border-radius: 10px;
+        }
+
+        .thermometer-fill.low {
+            background: linear-gradient(0deg, #dc3545, #f8d7da);
+        }
+
+        .thermometer-fill.medium {
+            background: linear-gradient(0deg, #ffc107, #fff3cd);
+        }
+
+        .thermometer-fill.high {
+            background: linear-gradient(0deg, #28a745, #d4edda);
+        }
+
+        .thermometer-fill.complete {
+            background: linear-gradient(0deg, #20c997, #d1ecf1);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -456,16 +578,21 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
+        // Configurable required load per proctor for the semester
+        const REQUIRED_LOAD = 10; // Change this number based on semester requirements
+        
         const proctorData = [
+           
             { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Samar Mjalli', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Zain Abu-Taleb', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Andreas Chehadi', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Bele Günther', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Elaf Al-Najafi', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Tarik Boutaib', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Ehtisabliallah Mohyaldeen', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
@@ -475,7 +602,7 @@
             { proctor: 'Luisa Pieri', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Mahmoud Elazzazi', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Margarethe Nofal', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
+            { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Zakaria El Guerda', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Mahmoud Jarrar', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Monika Hryniewicka', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
@@ -490,18 +617,6 @@
             { proctor: 'Ruba Alshawabkeh', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Samer Al-Zghoul', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Silvie Zeller', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Yassine Tawart', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Abderrahmane Ardem', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Lemiaa Mohmed', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Osman Khalile', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Othmane Cherrate', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Ashraf Saadeya', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Barita Sitanggang', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Elisa Faltermeier', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Hamzah Murshed', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Ramze Al-Ozieb', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Salma Ahmad', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Amin Mejdoubi', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' },
             { proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' }
         ];
@@ -513,6 +628,69 @@
         const exportBtn = document.getElementById('exportBtn');
         const clearBtn = document.getElementById('clearBtn');
         const exportNotification = document.getElementById('exportNotification');
+
+        function calculateProctorLoad(proctorName) {
+            const assignments = proctorData.filter(item => 
+                item.proctor === proctorName
+            ).length;
+            
+            const percentage = Math.min((assignments / REQUIRED_LOAD) * 100, 100);
+            
+            let status, statusText;
+            if (percentage >= 100) {
+                status = 'complete';
+                statusText = 'Complete';
+            } else if (percentage >= 70) {
+                status = 'high';
+                statusText = 'On Track';
+            } else if (percentage >= 40) {
+                status = 'medium';
+                statusText = 'Partial';
+            } else {
+                status = 'low';
+                statusText = 'Low';
+            }
+            
+            return {
+                assignments,
+                percentage,
+                status,
+                statusText,
+                required: REQUIRED_LOAD
+            };
+        }
+
+        function createLoadIndicator(proctorName, useThermometer = false) {
+            const load = calculateProctorLoad(proctorName);
+            
+            if (useThermometer) {
+                return `
+                    <div class="load-indicator">
+                        <div class="thermometer">
+                            <div class="thermometer-fill ${load.status}" style="height: ${load.percentage}%"></div>
+                        </div>
+                        <div class="load-details">
+                            <div class="load-fraction">${load.assignments} / ${load.required}</div>
+                            <div class="load-percentage">${Math.round(load.percentage)}%</div>
+                            <div class="load-status ${load.status}">${load.statusText}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="load-indicator">
+                        <div class="progress-circle">
+                            <div class="progress-fill ${load.status}" style="height: ${load.percentage}%"></div>
+                            <div class="progress-text">${load.assignments}/${load.required}</div>
+                        </div>
+                        <div class="load-details">
+                            <div class="load-percentage">${Math.round(load.percentage)}% Complete</div>
+                            <div class="load-status ${load.status}">${load.statusText}</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
         function searchProctor(query) {
             if (!query.trim()) {
@@ -577,39 +755,53 @@
 
             resultsCount.textContent = ` ${results.length} Aufsicht gefunden  ${results.length !== 1 ? 's' : ''} für "${query}"`;
             
-            resultsList.innerHTML = results.map(item => `
-                <div class="result-item">
-                    <div class="result-details">
-                        <div class="detail-item">
-                            <span class="detail-icon">👤</span>
-                            <span class="detail-label">Proctor:</span>
-                            <span class="detail-value">${highlightMatch(item.proctor, query)}</span>
+            // Group results by proctor to show load indicator once per proctor
+            const resultsByProctor = results.reduce((groups, item) => {
+                if (!groups[item.proctor]) {
+                    groups[item.proctor] = [];
+                }
+                groups[item.proctor].push(item);
+                return groups;
+            }, {});
+            
+            resultsList.innerHTML = Object.keys(resultsByProctor).map(proctorName => {
+                const proctorAssignments = resultsByProctor[proctorName];
+                return `
+                    <div class="result-item">
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">👤</span>
+                                <span class="detail-label">Proctor:</span>
+                                <span class="detail-value">${highlightMatch(proctorName, query)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📊</span>
+                                <span class="detail-label">Belastung:</span>
+                                <div class="detail-value">
+                                    ${createLoadIndicator(proctorName)}
+                                </div>
+                            </div>
                         </div>
-                        <div class="detail-item">
-                            <span class="detail-icon">📍</span>
-                            <span class="detail-label">Lab:</span>
-                            <span class="detail-value">${item.lab}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-icon">📅</span>
-                            <span class="detail-label">Date:</span>
-                            <span class="detail-value">${item.date}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-icon">🎓</span>
-                            <span class="detail-label">Session:</span>
-                            <span class="detail-value">${item.session}</span>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
+                            <h4 style="margin-bottom: 10px; color: #667eea; font-size: 0.95rem;">Aufsichten (${proctorAssignments.length}):</h4>
+                            ${proctorAssignments.map(item => `
+                                <div style="padding: 8px 0; border-bottom: 1px solid #f8f9fa; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 0.9rem;">
+                                    <div><span style="color: #666;">📍</span> ${item.lab}</div>
+                                    <div><span style="color: #666;">📅</span> ${item.date}</div>
+                                    <div><span style="color: #666;">🎓</span> ${item.session}</div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function displayFullSchedule(results, query) {
             resultsCount.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
                     <span>📋 Complete Schedule - ${results.length} total assignments</span>
-                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; font-size: 0.9rem;">Sorted chronologically</span>
+                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; font-size: 0.9rem;">Required: ${REQUIRED_LOAD} per proctor</span>
                 </div>
             `;
             
@@ -653,6 +845,13 @@
                                             <span class="detail-icon">🎓</span>
                                             <span class="detail-label">Session:</span>
                                             <span class="detail-value">${item.session}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-icon">📊</span>
+                                            <span class="detail-label">Load:</span>
+                                            <div class="detail-value">
+                                                ${createLoadIndicator(item.proctor, true)}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
