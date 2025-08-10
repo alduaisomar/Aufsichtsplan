@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prüfungsaufsichtsplan</title>
+    <title>Enhanced Prüfungsaufsichtsplan</title>
     <style>
         * {
             margin: 0;
@@ -11,772 +11,2726 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FF8C00 0%, #07b0f3 100%);
-            min-height: 100vh;
-            color: #333;
+        :root {
+            --primary-orange: #FF8C00;
+            --primary-blue: #1E90FF;
+            --secondary-orange: #FFB84D;
+            --secondary-blue: #4169E1;
+            --accent-orange: #FF7518;
+            --accent-blue: #0066CC;
+            --gradient-primary: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
+            --gradient-card: linear-gradient(145deg, #ffffff, #f8f9ff);
+            --shadow-card: 0 8px 32px rgba(30, 144, 255, 0.1);
+            --text-primary: #2c3e50;
+            --text-secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border-light: #e2e8f0;
         }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding-top: 60px;
+            overflow-x: hidden;
+        }
+
+         /* Enhanced Ticker Banner */
+         
+        .ticker-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.95), rgba(30, 136, 229, 0.95));
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    overflow: hidden; /* Crucial for the seamless effect */
+    border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex; /* Added to help align content */
+}
+
+.ticker-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    /* The animation now creates a seamless loop */
+    animation: scroll-left 40s linear infinite; 
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+}
+
+.ticker-content:hover {
+    animation-play-state: paused;
+}
+
+/* We create a wrapper for each set of items to ensure correct spacing */
+.ticker-content > span {
+    display: inline-flex;
+    align-items: center;
+}
+
+.ticker-item {
+    margin: 0 40px; /* Use margin for spacing instead of just margin-right */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ticker-rank {
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+.ticker-names {
+    font-weight: 700;
+}
+
+.ticker-count {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+       @keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* We scroll by -50% because the JS duplicates the content. This creates the seamless loop. */
+        transform: translateX(-50%);
+    }
+}
+
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
+        /* Enhanced Header */
         .header {
             margin-bottom: 40px;
             color: white;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            min-height: 60px;
-        }
-
-        .header-logo {
-            flex: 0 0 auto;
-        }
-
-        .header-center {
-            flex: 1;
             text-align: center;
-            margin: 0 20px;
+            position: relative;
         }
 
-        .header-right {
-            flex: 0 0 auto;
-        }
-
-        .logo-image, .right-image {
-            max-height: 60px;
-            max-width: 120px;
-            height: auto;
-            width: auto;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .logo-image:hover, .right-image:hover {
-            transform: scale(1.05);
+        .header-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
-        .fallback-icon {
-            font-size: 3rem;
-            opacity: 0.8;
-        }
-
-        .search-container {
+        /* Control Panel */
+        .control-panel {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
             margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .control-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 5px;
+            gap: 5px;
+        }
+
+        .view-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .view-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .control-content {
+            padding: 30px;
+        }
+
+        /* Enhanced Search */
+        .search-section {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: start;
         }
 
         .search-box {
             position: relative;
-            margin-bottom: 20px;
         }
 
         #searchInput {
             width: 100%;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 18px 50px 18px 20px;
+            font-size: 1.2rem;
+            border: 3px solid var(--border-light);
+            border-radius: 15px;
             outline: none;
             transition: all 0.3s ease;
+            background: #fafbfc;
         }
 
         #searchInput:focus {
-            border-color: #FF8C00;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+            background: white;
         }
 
         .search-icon {
             position: absolute;
-            right: 15px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
-            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
         }
 
-        .results-container {
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
+            border: 2px solid var(--border-light);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: var(--shadow-card);
         }
 
-        .results-header {
-            background: linear-gradient(135deg, #FF8C00, #07b0f3);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .results-count {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .header-buttons {
+        .autocomplete-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s ease;
             display: flex;
-            gap: 10px;
-            justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .clear-btn, .export-btn {
-            background: rgba(255,255,255,0.2);
+        .autocomplete-item:hover,
+        .autocomplete-item.selected {
+            background: #f1f5f9;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: var(--gradient-primary);
             color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 8px 16px;
-            border-radius: 20px;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
-        .clear-btn:hover, .export-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-1px);
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .export-btn:disabled {
+        .action-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
 
-        .export-btn:disabled:hover {
-            background: rgba(255,255,255,0.2);
-            transform: none;
-        }
-
-        .results-list {
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .result-item {
-            padding: 20px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .result-item:hover {
-            background: #f8f9ff;
-        }
-
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-details {
+        /* Advanced Filters */
+        .filters-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .detail-item {
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .filter-select, .filter-input {
+            padding: 10px 12px;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        /* Statistics Dashboard */
+        .stats-dashboard {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .stats-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .chart-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .chart-tab {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .chart-tab.active {
+            background: white;
+            color: var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced Results */
+        .results-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .results-count {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .results-meta {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Card View */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+
+        .proctor-card {
+            background: var(--gradient-card);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+            border-color: var(--primary-orange);
+        }
+
+        .proctor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .proctor-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .proctor-initials {
+            background: var(--gradient-primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Enhanced Load Indicator */
+        .load-indicator {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-light);
+        }
+
+        .load-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .load-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .load-percentage {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .load-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .load-fill {
+            height: 100%;
+            transition: width 0.6s ease;
+            border-radius: 6px;
+        }
+
+        .load-fill.low { background: var(--gradient-primary); }
+        .load-fill.medium { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+        .load-fill.high { background: linear-gradient(90deg, var(--success), #34d399); }
+        .load-fill.complete { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+        .load-status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .load-status.low { color: var(--primary-orange); }
+        .load-status.medium { color: var(--warning); }
+        .load-status.high { color: var(--success); }
+        .load-status.complete { color: #8b5cf6; }
+
+        /* Assignment List */
+        .assignments-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .assignment-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            gap: 15px;
+        }
+
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
+
+        .assignment-icon {
+            background: var(--gradient-primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .assignment-details {
+            flex: 1;
+        }
+
+        .assignment-primary {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .assignment-secondary {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Table View */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .results-table th {
+            background: #f8fafc;
+            font-weight: bold;
+            color: var(--text-primary);
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+        }
+
+        .results-table th:hover {
+            background: #f1f5f9;
+        }
+
+        .sort-arrow {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .sort-arrow.active {
+            opacity: 1;
+            color: var(--primary-blue);
+        }
+
+        /* Achievements Panel */
+        .achievements-panel {
+            position: fixed;
+            top: 60px;
+            right: -350px;
+            width: 350px;
+            height: calc(100vh - 60px);
+            background: white;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 500;
+            overflow-y: auto;
+        }
+
+        .achievements-panel.open {
+            right: 0;
+        }
+
+        .achievements-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-achievements {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .achievement-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+        }
+
+        .achievement-content {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .achievement-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-card);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1500;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .detail-icon {
-            font-size: 1.2rem;
-            width: 25px;
-            text-align: center;
+        .notification.show {
+            transform: translateX(0);
         }
 
-        .detail-label {
-            font-weight: 600;
-            color: #666;
-            min-width: 80px;
+        .notification.error {
+            background: var(--error);
         }
 
-        .detail-value {
-            font-size: 1.1rem;
-            color: #333;
-            font-weight: 500;
+        .notification.warning {
+            background: var(--warning);
         }
 
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .no-results-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        .welcome-message {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .welcome-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #FF8C00;
-        }
-
-        .date-group {
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .date-group:last-child {
-            border-bottom: none;
-        }
-
-        .date-header {
-            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid #e0e4ff;
-        }
-
-        .date-icon {
-            font-size: 1.5rem;
-        }
-
-        .date-title {
-            color: #FF8C00;
-            font-size: 1.3rem;
-            margin: 0;
-            flex: 1;
-        }
-
-        .date-count {
-            background: #FF8C00;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .date-items .result-item.compact {
-            padding: 15px 20px;
-        }
-
-        /* Load indicator styles */
-        .load-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-            padding: 6px 10px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-        }
-
-        .progress-circle {
-            position: relative;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 600;
-            color: #495057;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transition: all 0.3s ease;
-            border-radius: 50%;
-        }
-
-        .progress-fill.low {
-            background: linear-gradient(0deg, #dc3545, #f8d7da);
-        }
-
-        .progress-fill.medium {
-            background: linear-gradient(0deg, #ffc107, #fff3cd);
-        }
-
-        .progress-fill.high {
-            background: linear-gradient(0deg, #28a745, #d4edda);
-        }
-
-        .progress-fill.complete {
-            background: linear-gradient(0deg, #20c997, #d1ecf1);
-        }
-
-        .progress-text {
-            position: relative;
-            z-index: 2;
-            font-size: 9px;
-            line-height: 1;
-            text-align: center;
-        }
-
-        .load-details {
-            flex: 1;
-            font-size: 0.85rem;
-        }
-
-        .load-fraction {
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .load-percentage {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 2px;
-        }
-
-        .load-status {
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .load-status.low { color: #dc3545; }
-        .load-status.medium { color: #ffc107; }
-        .load-status.high { color: #28a745; }
-        .load-status.complete { color: #20c997; }
-
-        .thermometer {
-            width: 20px;
-            height: 40px;
-            background: #e9ecef;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .thermometer-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transition: all 0.6s ease;
-            border-radius: 10px;
-        }
-
-        .thermometer-fill.low {
-            background: linear-gradient(0deg, #dc3545, #f8d7da);
-        }
-
-        .thermometer-fill.medium {
-            background: linear-gradient(0deg, #ffc107, #fff3cd);
-        }
-
-        .thermometer-fill.high {
-            background: linear-gradient(0deg, #28a745, #d4edda);
-        }
-
-        .thermometer-fill.complete {
-            background: linear-gradient(0deg, #20c997, #d1ecf1);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
             
             .header h1 {
-                font-size: 2rem;
-            }
-
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .header-center {
-                margin: 0;
-                order: -1;
-            }
-
-            .logo-image, .right-image {
-                max-height: 50px;
-                max-width: 100px;
+                font-size: 2.5rem;
             }
             
-            .search-container {
+            .search-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
                 padding: 20px;
             }
             
-            .result-details {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .filters-section {
                 grid-template-columns: 1fr;
+            }
+            
+            .achievements-panel {
+                width: 100vw;
+                right: -100vw;
+            }
+        }
+
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Welcome Message */
+        .welcome-container {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .welcome-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header-content {
+        display: flex;
+        justify-content: space-between; /* لتوزيع العناصر بمسافات متساوية بينهم */
+        align-items: center; /* لمحاذاة العناصر عمودياً في المنتصف */
+        padding: 0 25px; /* يمكنك تعديل هذه القيمة لضبط الهوامش الجانبية */
+    }
+
+    .logo {
+        height: 60px; /* يمكنك تعديل ارتفاع الشعار حسب رغبتك */
+        width: auto; /* للحفاظ على أبعاد الصورة الأصلية */
+    }
+    /* --- تنسيقات الشاشات الكبيرة (الافتراضية) --- */
+    .header-content {
+        display: flex;
+        justify-content: space-between; /* توزيع العناصر على الأطراف */
+        align-items: center;            /* محاذاة العناصر في المنتصف عمودياً */
+        padding: 10px 25px;             /* هوامش داخلية */
+        gap: 15px;                      /* مسافة بين العناصر إذا اقتربوا من بعضهم */
+    }
+
+    .header-content h1 {
+        margin: 0; /* لإزالة الهامش الافتراضي للعنوان */
+        font-size: 2em; /* حجم الخط (يمكنك تعديله) */
+        text-align: center; /* لمحاذاة النص في المنتصف */
+        white-space: nowrap; /* لمنع انكسار النص إلى سطر جديد */
+    }
+
+    .logo {
+        height: 50px; /* ارتفاع الشعار (يمكنك تعديله) */
+        width: auto;
+        flex-shrink: 0; /* لمنع الشعار من الانكماش */
+    }
+
+    /* --- تنسيقات الشاشات الصغيرة (Mobile Responsive) --- */
+    /* يتم تطبيق هذه الأكواد فقط عندما يكون عرض الشاشة 768px أو أقل */
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column; /* تغيير اتجاه الترتيب إلى عمودي */
+            padding: 15px;
+        }
+
+        .header-content h1 {
+            font-size: 1.5em; /* تصغير حجم الخط قليلاً للشاشات الصغيرة */
+        }
+
+        .logo {
+            height: 45px; /* تصغير حجم الشعار قليلاً */
+        }
+    }
+    .header-content {
+        display: flex;
+        justify-content: space-between; /* يدفع الشعارات للأطراف والعنوان في المنتصف */
+        align-items: center;            /* يحاذي كل العناصر عمودياً في المنتصف */
+        padding: 10px 25px;             /* هوامش للشاشات الكبيرة */
+        gap: 15px;                      /* مسافة فاصلة بين العناصر لمنع الالتصاق */
+    }
+
+    .header-content h1 {
+        margin: 0;
+        font-size: 2.2em; /* حجم الخط الافتراضي */
+        white-space: nowrap; /* يمنع نزول العنوان إلى سطر جديد */
+        text-align: center;
+        /* يتقلص العنوان ليسمح بمساحة للشعارات */
+        flex-shrink: 1; 
+        min-width: 0;
+    }
+
+    .logo {
+        height: 60px; /* حجم الشعار الافتراضي */
+        width: auto;
+        /* يمنع الشعارات من التقلص */
+        flex-shrink: 0; 
+    }
+
+    /* --- تنسيقات للشاشات الصغيرة والمتوسطة (أقل من 768px) --- */
+    @media (max-width: 768px) {
+        .header-content {
+            padding: 10px 15px; /* تقليل الهوامش الجانبية */
+            gap: 10px;          /* تقليل المسافة الفاصلة */
+        }
+
+        .header-content h1 {
+            font-size: 1.6em; /* تصغير حجم الخط */
+        }
+
+        .logo {
+            height: 45px; /* تصغير حجم الشعارات */
+        }
+    }
+
+    /* --- تنسيقات إضافية للشاشات الضيقة جداً (أقل من 420px) --- */
+    @media (max-width: 420px) {
+        .header-content h1 {
+            font-size: 1.2em; /* تصغير الخط بشكل أكبر */
+        }
+
+        .logo {
+            height: 35px; /* تصغير الشعارات بشكل أكبر */
+        }
+    }
+    /* --- START: NEW CSS FOR CONFLICTS SECTION --- */
+    #conflictsContainer {
+        display: none; /* Hidden by default */
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-card);
+        margin-bottom: 30px;
+        border-left: 6px solid var(--error);
+        overflow: hidden;
+    }
+
+    .conflicts-header {
+        background: var(--error);
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .conflicts-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .conflicts-list {
+        padding: 15px 30px 30px 30px;
+    }
+
+    .conflict-item {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .conflict-item:last-child {
+        border-bottom: none;
+    }
+
+    .conflict-details p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .conflict-details strong {
+        color: var(--error);
+    }
+    
+    .conflict-action a {
+        background: var(--error);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .conflict-action a:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+    }
+       /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header h1 {
+                font-size: 2.8rem;
+            }
+            
+            .control-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .view-toggle {
+                justify-content: center;
+            }
+            
+            .search-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .quick-actions {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            .filters-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .results-info {
+                justify-content: center;
+            }
+            
+            .results-actions {
+                justify-content: center;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .chart-tabs {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 50px;
+            }
+            
+            .ticker-banner {
+                height: 45px;
+            }
+            
+            .ticker-item {
+                margin: 0 20px;
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            
+            .ticker-count {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .header-content {
+                padding: 25px 20px;
+            }
+            
+            .control-content {
+                padding: 20px;
+            }
+            
+            .view-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            
+            #searchInput {
+                padding: 15px 40px 15px 15px;
+                font-size: 1rem;
+            }
+            
+            .search-icon {
+                right: 15px;
+                font-size: 1.2rem;
+            }
+            
+            .filters-section {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .filter-select, .filter-input {
+                padding: 12px 10px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .stat-card {
+                padding: 20px 15px;
+            }
+            
+            .stat-icon {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            .proctor-card {
+                padding: 20px;
+            }
+            
+            .proctor-name {
+                font-size: 1.2rem;
+            }
+            
+            .proctor-initials {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            
+            .assignment-item {
+                padding: 10px 0;
+            }
+            
+            .assignment-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .chart-container {
+                padding: 20px 15px;
+            }
+            
+            .achievements-panel {
+                width: 100vw;
+                right: -100vw;
+            }
+            
+            .achievements-header {
+                padding: 15px;
+            }
+            
+            .achievement-item {
+                padding: 15px;
+            }
+            
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+                font-size: 1.3rem;
+            }
+            
+            .conflict-item {
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 10px;
             }
+            
+            .conflict-action a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
 
-            .header-buttons {
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+            
+            .header p {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .control-header {
+                padding: 15px 20px;
+            }
+            
+            .control-title {
+                font-size: 1.2rem;
+            }
+            
+            .view-toggle {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .view-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .quick-actions {
                 flex-direction: column;
                 gap: 8px;
             }
-
-            .clear-btn, .export-btn {
-                padding: 10px 16px;
-                font-size: 0.95rem;
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 16px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+            }
+            
+            .results-header {
+                padding: 20px;
+            }
+            
+            .results-count {
+                font-size: 1.1rem;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .results-actions .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .chart-title {
+                font-size: 1.3rem;
+            }
+            
+            .chart-tabs {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .chart-tab {
+                width: 100%;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .results-table {
+                font-size: 0.85rem;
+            }
+            
+            .results-table th,
+            .results-table td {
+                padding: 10px 8px;
+            }
+            
+            .welcome-icon {
+                font-size: 4rem;
+                margin-bottom: 20px;
+            }
+            
+            .welcome-title {
+                font-size: 1.6rem;
+                margin-bottom: 12px;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            
+            .autocomplete-dropdown {
+                max-height: 200px;
+            }
+            
+            .autocomplete-item {
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px 20px;
-            color: #FF8C00;
+        @media (max-width: 420px) {
+            .ticker-content {
+                font-size: 13px;
+            }
+            
+            .ticker-item {
+                margin: 0 15px;
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.95rem;
+            }
+            
+            .header-content {
+                padding: 20px 15px;
+            }
+            
+            .control-content {
+                padding: 15px;
+            }
+            
+            .proctor-card {
+                padding: 15px;
+            }
+            
+            .load-indicator {
+                padding: 12px;
+            }
+            
+            .assignment-details {
+                font-size: 0.9rem;
+            }
+            
+            .assignment-primary {
+                font-size: 0.95rem;
+            }
+            
+            .assignment-secondary {
+                font-size: 0.8rem;
+            }
+            
+            .chart-container {
+                padding: 15px 10px;
+            }
+            
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 15px;
+                right: 15px;
+            }
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #FF8C00;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+        /* Landscape orientation adjustments for tablets */
+        @media (max-width: 1024px) and (orientation: landscape) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .filters-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Print styles */
+        @media print {
+            .ticker-banner,
+            .fab,
+            .achievements-panel,
+            .control-panel,
+            .chart-container,
+            .notification,
+            .free-proctor-finder-panel /* Hinzugefügt, um beim Drucken auszublenden */
+             {
+                display: none !important;
+            }
+            
+            .container {
+                padding: 0;
+                max-width: none;
+            }
+            
+            .header-content {
+                background: none;
+                border: none;
+                color: #000;
+            }
+            
+            .results-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            
+            .proctor-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
         }
+    /* --- END: NEW CSS FOR CONFLICTS SECTION --- */
 
-        .export-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
+    /* --- START: NEW CSS FOR FREE PROCTOR FINDER --- */
+    #freeProctorFinderPanel {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-card);
+        margin-top: 30px; /* Fügt Abstand über dem neuen Panel hinzu */
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
 
-        .export-notification.show {
-            transform: translateX(0);
-        }
+    .free-proctor-header {
+        background: linear-gradient(135deg, var(--success), #34d399); /* Grüner Header für "verfügbar" */
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
 
-        .export-notification.error {
-            background: #dc3545;
-        }
+    .free-proctor-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
 
-        /* Enhanced styles for better image export */
-        .export-ready {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        }
+    .free-proctor-controls {
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
+        align-items: end;
+    }
+    
+    .free-proctor-results {
+        padding: 0 30px 30px 30px;
+        display: none; /* Standardmäßig ausgeblendet */
+    }
 
-        .export-ready * {
-            -webkit-font-smoothing: antialiased !important;
-            -moz-osx-font-smoothing: grayscale !important;
-            text-rendering: optimizeLegibility !important;
+    .free-proctor-results h3 {
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+    
+    .free-proctor-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    .free-proctor-item {
+        background: var(--gradient-card);
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+    }
+
+    .free-proctor-item::before {
+        content: '✅';
+        font-size: 1.2rem;
+    }
+
+    /* Responsive Anpassungen für das neue Panel */
+     @media (max-width: 768px) {
+        .free-proctor-controls {
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
+        .free-proctor-header h2 {
+            font-size: 1.3rem;
+        }
+     }
+    /* --- END: NEW CSS FOR FREE PROCTOR FINDER --- */
+    /* ======================================================================= */
+/* ===================== START: DARK MODE CSS STYLES ===================== */
+/* ======================================================================= */
+
+/* --- 1. Dark Mode Color Variables --- */
+:root {
+    /* Define dark theme colors */
+    --dark-bg: #1a202c;
+    --dark-card: #2d3748;
+    --dark-header-bg: rgba(23, 25, 35, 0.5);
+    --dark-text-primary: #edf2f7;
+    --dark-text-secondary: #a0aec0;
+    --dark-border: #4a5568;
+    --dark-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --dark-gradient-card: linear-gradient(145deg, #2d3748, #212836);
+}
+
+/* --- 2. Dark Mode Toggle Button Styles --- */
+#theme-toggle {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2000; /* Ensure it's on top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    overflow: hidden; /* Hide the icon that is not active */
+}
+
+#theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.theme-icon {
+    width: 24px;
+    height: 24px;
+    position: absolute; /* Place icons on top of each other */
+    color: white;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#theme-icon-sun {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+#theme-icon-moon {
+    opacity: 0;
+    transform: translateY(30px) rotate(180deg);
+}
+
+/* Styles for when dark mode is active */
+.dark-mode #theme-icon-sun {
+    opacity: 0;
+    transform: translateY(-30px) rotate(-180deg);
+}
+.dark-mode #theme-icon-moon {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+.dark-mode #theme-toggle {
+    background: rgba(45, 55, 72, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments for the toggle */
+@media (max-width: 768px) {
+    #theme-toggle {
+        top: 8px;
+        right: 10px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+/* --- 3. General Dark Mode Theme Overrides --- */
+body.dark-mode {
+    background: var(--dark-bg);
+    color: var(--dark-text-primary);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.dark-mode .header-content {
+    background: var(--dark-header-bg);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .control-panel,
+.dark-mode .stats-dashboard,
+.dark-mode .chart-container,
+.dark-mode .results-container,
+.dark-mode .achievements-panel,
+.dark-mode #conflictsContainer,
+.dark-mode #freeProctorFinderPanel {
+    background: var(--dark-card);
+    box-shadow: var(--dark-shadow);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border);
+}
+
+.dark-mode .welcome-title,
+.dark-mode .proctor-name,
+.dark-mode .chart-title,
+.dark-mode .results-table th,
+.dark-mode .free-proctor-results h3,
+.dark-mode h2, .dark-mode h3,
+.dark-mode .filter-label { /* <-- This is the line you are adding */
+    color: var(--dark-text-primary);
+}
+
+.dark-mode .welcome-subtitle,
+.dark-mode .proctor-card .assignment-secondary,
+.dark-mode .stat-label,
+.dark-mode .achievement-desc,
+.dark-mode .conflict-details p:last-child,
+.dark-mode .assignment-secondary {
+    color: var(--dark-text-secondary);
+}
+
+.dark-mode #searchInput,
+.dark-mode .filter-select,
+.dark-mode .filter-input {
+    background-color: #2d3748;
+    border-color: var(--dark-border);
+    color: var(--dark-text-primary);
+}
+
+.dark-mode #searchInput::placeholder {
+    color: var(--dark-text-secondary);
+}
+
+.dark-mode #searchInput:focus,
+.dark-mode .filter-select:focus,
+.dark-mode .filter-input:focus {
+    border-color: var(--primary-orange);
+    background-color: var(--dark-bg);
+}
+
+.dark-mode .search-icon {
+    color: var(--dark-text-secondary);
+}
+
+.dark-mode .proctor-card,
+.dark-mode .stat-card,
+.dark-mode .free-proctor-item {
+    background: var(--dark-gradient-card);
+    border-color: var(--dark-border);
+}
+
+.dark-mode .proctor-card:hover,
+.dark-mode .stat-card:hover {
+    border-color: var(--primary-orange);
+    box-shadow: var(--dark-shadow);
+}
+
+.dark-mode .load-indicator {
+    background-color: #1c2330;
+    border-color: var(--dark-border);
+}
+
+.dark-mode .load-title,
+.dark-mode .load-percentage {
+    color: var(--dark-text-primary);
+}
+
+.dark-mode .assignment-item,
+.dark-mode .conflict-item,
+.dark-mode .achievement-item {
+    border-bottom-color: var(--dark-border);
+}
+
+.dark-mode .results-table th {
+    background: var(--dark-bg);
+}
+
+.dark-mode .results-table td {
+    border-bottom-color: var(--dark-border);
+}
+
+.dark-mode .results-table tr:hover td {
+    background-color: rgba(74, 85, 104, 0.5);
+}
+
+.dark-mode .chart-tabs {
+    background: var(--dark-bg);
+}
+/* Add this new rule for the inactive tabs */
+.dark-mode .chart-tab {
+    color: var(--dark-text-secondary);
+}
+/* --- Fix for Dark Logo in Dark Mode --- */
+.dark-mode img[src*="glc.png"] {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+.dark-mode .chart-tab.active {
+    background: var(--dark-card);
+    color: var(--primary-blue);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .autocomplete-dropdown {
+    background: var(--dark-card);
+    border-color: var(--dark-border);
+}
+
+.dark-mode .autocomplete-item:hover,
+.dark-mode .autocomplete-item.selected {
+    background: var(--dark-bg);
+}
+
+.dark-mode .welcome-icon {
+    /* Keep the gradient, but make sure it's visible on dark backgrounds if needed */
+}
+/* ======================================================================= */
+/* ====================== END: DARK MODE CSS STYLES ====================== */
+/* ======================================================================= */
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-top">
-                <div class="header-logo">
-                    <img src="your-logo.png" alt="Logo" class="logo-image" 
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-                    <span class="fallback-icon" style="display: none;">GJU</span>
-                </div>
-                
-                <div class="header-center">
-                  <h1>Aufsichtsplan</h1>
-                    <p>Suche nach deinen Aufsichtsdetails, indem du dein Namenskürzel eingibst.</p>
-                </div>
-                
-                <div class="header-right">
-                    <img src="your-right-image.png" alt="Right Image" class="right-image"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-                    <span class="fallback-icon" style="display: none;">GLC</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Namenskürzel der Aufsichtsperson eingeben (z.B. oad, MQ, Aas)...">
-                <span class="search-icon">🔍</span>
-            </div>
-        </div>
-
-        <div class="results-container" id="resultsContainer">
-            <div class="results-header">
-                <div class="results-count" id="resultsCount">Bereit zum Suchen</div>
-                <div class="header-buttons">
-                    <button class="clear-btn" id="clearBtn">
-                        <span>🔄</span>
-                        <span>Suche zurücksetzen</span>
-                    </button>
-                    <button class="export-btn" id="exportBtn" disabled>
-                        <span>📷</span>
-                        <span>Als Bild speichern</span>
-                    </button>
-                </div>
-            </div>
-            <div class="results-list" id="resultsList">
-                <div class="welcome-message">
-                    <div class="welcome-icon">👋</div>
-                   <h3>Herzlich willkommen!</h3>
-                    <p>Gib die Abkürzung ... ein, um den vollständingen Prüfungsplan zu sehen.</p>
-                </div>
-            </div>
+    <!-- Enhanced Ticker Banner -->
+     <!-- ======================================================================= -->
+<!-- =================== START: DARK MODE TOGGLE HTML ==================== -->
+<!-- ======================================================================= -->
+<div id="theme-toggle" title="Toggle Dark/Light Mode">
+    <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
+        <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.591-1.591a.75.75 0 011.06 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM17.834 17.834a.75.75 0 01-1.06 0l-1.592-1.591a.75.75 0 111.06-1.06l1.591 1.591a.75.75 0 010 1.06zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0v2.25a.75.75 0 01-.75.75zM5.106 17.834a.75.75 0 010-1.06l1.591-1.592a.75.75 0 011.06 1.06l-1.591 1.592a.75.75 0 01-1.06 0zM4.5 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75zM6.106 5.106a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.06 1.06L6.106 6.166a.75.75 0 010-1.06z" />
+    </svg>
+    <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="theme-icon">
+        <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69a.75.75 0 01.981.981A10.503 10.503 0 0118 19.5a10.5 10.5 0 01-10.5-10.5c0-1.25.18-2.457.513-3.598a.75.75 0 01.819-.162z" clip-rule="evenodd" />
+    </svg>
+</div>
+<!-- ======================================================================= -->
+<!-- ==================== END: DARK MODE TOGGLE HTML ===================== -->
+<!-- ======================================================================= -->
+    <div class="ticker-banner">
+        <div class="ticker-content" id="tickerContent">
+            <!-- Dynamic content will be populated here -->
         </div>
     </div>
 
-    <div class="export-notification" id="exportNotification"></div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        // Configurable required load per proctor for the semester
-        const REQUIRED_LOAD = 10; // Change this number based on semester requirements
-        
-        const proctorData = [
-           { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: 'Amin Mejdoubi', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
-{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+    <!-- Achievements Panel -->
+    <div class="achievements-panel" id="achievementsPanel">
+        <div class="achievements-header">
+            <h3>🏆 Achievements</h3>
+            <button class="close-achievements" onclick="toggleAchievements()">×</button>
+        </div>
+        <div id="achievementsList">
+            <!-- Achievements will be populated here -->
+        </div>
+    </div>
 
-            { proctor: 'Abdulmoamen Mohammed', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Amani Zaro', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Samar Mjalli', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Zain Abu-Taleb', lab: 'B002', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Andreas Chehadi', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },  { proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Bele Günther', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Elaf Al-Najafi', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Tarik Boutaib', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Ehtisabliallah Mohyaldeen', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Husein Al-Neimat', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Tala Mesmar', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Hamzah Murshed', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Luisa Pieri', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Mahmoud Elazzazi', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Margarethe Nofal', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' }, { proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Zakaria El Guerda', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Mahmoud Jarrar', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Monika Hryniewicka', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Mutaz Hassan', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Jaroslav Patus', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Nazeeh Awad', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Dima Amr', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Hanna Schweitzer', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Liza Balker', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Lobna Jlidi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Melanie Asdoodi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Ruba Alshawabkeh', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Samer Al-Zghoul', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Silvie Zeller', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' },
-            { proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session' }
+    <div class="container">
+        <!-- Enhanced Header -->
+       <div class="header">
+    <div class="header-content">
+        <!-- ضع رابط الشعار الأيسر هنا -->
+        <img src="https://www.gju.edu.jo/sites/default/files/glc.png" alt="Left Logo" class="logo">
+
+        <h1>🎓 Aufsichtsplan</h1>
+
+        <!-- ضع رابط الشعار الأيمن هنا -->
+        <img src="https://www.gju.edu.jo/sites/all/themes/bootstrap/images/GJU-LOGO2.png" alt="Right Logo" class="logo">
+    </div>
+</div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-header">
+                <div class="control-title">🎛️ Kontrollzentrum</div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchView('cards')" data-view="cards">
+                        🗂️ Karten
+                    </button>
+                    <button class="view-btn" onclick="switchView('table')" data-view="table">
+                        📊 Tabelle
+                    </button>
+                    <button class="view-btn" onclick="switchView('timeline')" data-view="timeline">
+                        📅 Zeitleiste
+                    </button>
+                </div>
+            </div>
+            
+            <div class="control-content">
+                <div class="search-section">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Suche nach Namenskürzel, Lab, Datum oder Sitzung... ">
+                        <span class="search-icon">🔍</span>
+                        <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="action-btn" id="clearBtn" onclick="clearSearch()">
+                            🔄 Zurücksetzen
+                        </button>
+                        <button class="action-btn" id="exportBtn" onclick="exportResults()">
+                            📸 Exportieren
+                        </button>
+                     <!--    <button class="action-btn" onclick="toggleAchievements()">
+                            🏆 Awards
+                        </button>-->
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label class="filter-label">📍 Lab Filter</label>
+                        <select class="filter-select" id="labFilter">
+                            <option value="">Alle Labs</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">📅 Zeitraum</label>
+                        <select class="filter-select" id="dateFilter">
+                            <option value="">Alle Termine</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">📊 Belastungsstatus</label>
+                        <select class="filter-select" id="loadFilter">
+                            <option value="">Alle Belastungen</option>
+                            <option value="low">Niedrige Belastung (&lt;40%)</option>
+                            <option value="medium">Mittlere Belastung (40-70%)</option>
+                            <option value="high">Hohe Belastung (70-100%)</option>
+                            <option value="complete">Vollständig (100%+)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">🎓 Session</label>
+                        <select class="filter-select" id="sessionFilter">
+                            <option value="">Alle Sessions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Results Container -->
+        <div class="results-container">
+            <div class="results-header">
+                <div class="results-info">
+                    <div class="results-count" id="resultsCount">Bereit zum Entdecken</div>
+                    <div class="results-meta" id="resultsMeta">0 totale Aufsichten</div>
+                </div>
+                <div class="results-actions">
+                    <button class="action-btn" onclick="generateReport()">📋 Bericht</button>
+                    <button class="action-btn" onclick="exportToCSV()">📄 CSV</button>
+                    <button class="action-btn" onclick="printSchedule()">🖨️ Drucken</button>
+                </div>
+            </div>
+            
+            <div id="resultsContent">
+                <div class="welcome-container">
+                    <div class="welcome-icon">🚀</div>
+                    <h2 class="welcome-title">Willkommen im verbesserten System!</h2>
+                    <p class="welcome-subtitle">Beginnen Sie mit der Suche nach dem Namenskürzel einer Lehrkraft, geben Sie „...“ ein, um den vollständigen Aufsichtsplan zu erhalten, oder verwenden Sie die erweiterten Filter oben. Entdecken Sie interaktive Diagramme, verdienen Sie Erfolge und entdecken Sie leistungsstarke Analysen!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Dashboard -->
+        <div class="stats-dashboard">
+            <div class="stats-header">
+                <h2>📊 Live-Analyse Dashboard</h2>
+            </div>
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">📈 Visualisierung der Arbeitsbelastung</h3>
+                <div class="chart-tabs">
+                    <button class="chart-tab active" onclick="switchChart('distribution')">Verteilung</button>
+                    <button class="chart-tab" onclick="switchChart('timeline')">Zeitleiste</button>
+                    <button class="chart-tab" onclick="switchChart('comparison')">Vergleich</button>
+                </div>
+            </div>
+            <div style="position: relative; height: 400px;">
+                <canvas id="workloadChart"></canvas>
+            </div>
+        </div>
+
+        <!-- --- START: NEW CONFLICTS DISPLAY AREA --- -->
+        <div id="conflictsContainer">
+            <div class="conflicts-header">
+                <h2>⚠️ Konflikterkennung</h2>
+            </div>
+            <div class="conflicts-list" id="conflictsList">
+                <!-- Detected conflicts will be dynamically inserted here -->
+            </div>
+        </div>
+        <!-- --- END: NEW CONFLICTS DISPLAY AREA --- -->
+        
+        <!-- --- START: NEW FREE PROCTOR FINDER PANEL --- -->
+        <div id="freeProctorFinderPanel">
+            <div class="free-proctor-header">
+                <h2>🗓️ Finde verfügbare Aufsichtspersonen</h2>
+            </div>
+            <div class="free-proctor-controls">
+                <div class="filter-group">
+                    <label class="filter-label">Wähle einen Zeitpunkt, um zu sehen, wer verfügbar ist</label>
+                    <select class="filter-select" id="freeTimeSelector">
+                        <option value="">Bitte Zeitpunkt wählen...</option>
+                    </select>
+                </div>
+                <button class="action-btn" id="findFreeBtn">🔍 Verfügbare finden</button>
+            </div>
+            <div class="free-proctor-results" id="freeProctorsResult">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+        <!-- --- END: NEW FREE PROCTOR FINDER PANEL --- -->
+
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="showQuickHelp()" title="Quick Help">❓</button>
+
+    <!-- Notification Container -->
+   <!-- <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>-->
+
+    <!-- Include Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        // Enhanced Configuration
+        const CONFIG = {
+            REQUIRED_LOAD: 7,
+            ANIMATION_DURATION: 300,
+            CHART_COLORS: {
+                orange: '#FF8C00',
+                blue: '#1E90FF',
+                green: '#10b981',
+                yellow: '#f59e0b',
+                purple: '#8b5cf6',
+                red: '#ef4444'
+            }
+        };
+
+        // Enhanced Dataset
+        const proctorData = [
+        { proctor: 'Andreas Chehadi', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 06:30', session: 'D4 1st session '},
+{ proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 03:30', session: 'D4 1st session '},{ proctor: 'Basil Alabdallah', lab: 'B101', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 06:30', session: 'D4 1st session '},{ proctor: 'Basil Alabdallah', lab: 'B103', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Bushra Tarawneh', lab: 'B105', date: '01. Jan 01:30', session: 'D4 1st session '},{ proctor: 'Basil Alabdallah', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session '},
+
+{ proctor: '', lab: 'B105', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Bele Günther', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},{ proctor: 'Dana Abuthawabeh', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Elaf Al-Najafi', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Tarik Boutaib', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B301', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Ehtisabliallah Mohyaldeen', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Husein Al-Neimat', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Tala Mesmar', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B302', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'B303', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Margarethe Nofal', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Maryam Al-Qwidari', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Zakaria El Guerda', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C106', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Mahmoud Jarrar', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Monika Hryniewicka', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Mutaz Hassan', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C126', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Jaroslav Patus', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Nazeeh Awad', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C131', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C402', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C402', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C402', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C402', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C403', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C403', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C403', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C403', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C407', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C407', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C407', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C407', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'C408', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Dima Amr', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Hanna Schweitzer', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Liza Balker', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Lobna Jlidi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Luisa Pieri', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Melanie Asdoodi', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Ruba Alshawabkeh', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Samer Al-Zghoul', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Silvie Zeller', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Yassine Tawart', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'D016', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Abderrahmane Ardem', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Lemiaa Mohmed', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Osman Khalile', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Othmane Cherrate', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H501', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Ashraf Saadeya', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Barita Sitanggang', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Elisa Faltermeier', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H515', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Hamzah Murshed', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Ramze Al-Ozieb', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Salma Ahmad', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'H516', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'L208', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Amin Mejdoubi', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Eman Asenwar', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: 'Safet Haskic', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M121', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: '', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+{ proctor: '', lab: 'M327', date: '01. Jan 08:30', session: 'D4 1st session '},
+
         ];
 
-        let searchTimeout;
-        const searchInput = document.getElementById('searchInput');
-        const resultsList = document.getElementById('resultsList');
-        const resultsCount = document.getElementById('resultsCount');
-        const exportBtn = document.getElementById('exportBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const exportNotification = document.getElementById('exportNotification');
+        // State Management
+        let currentView = 'cards';
+        let currentChart = null;
+        let filteredResults = [];
+        let searchHistory = [];
+        let achievements = [];
+        let userPreferences = {};
 
-        function calculateProctorLoad(proctorName) {
-            const assignments = proctorData.filter(item => 
-                item.proctor === proctorName
-            ).length;
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+        const resultsContent = document.getElementById('resultsContent');
+        const resultsCount = document.getElementById('resultsCount');
+        const resultsMeta = document.getElementById('resultsMeta');
+        const statsGrid = document.getElementById('statsGrid');
+        // --- START: NEW DOM ELEMENTS FOR CONFLICTS ---
+        const conflictsContainer = document.getElementById('conflictsContainer');
+        const conflictsList = document.getElementById('conflictsList');
+        // --- END: NEW DOM ELEMENTS FOR CONFLICTS ---
+
+        // --- START: NEW DOM ELEMENTS FOR FREE PROCTOR FINDER ---
+        const freeTimeSelector = document.getElementById('freeTimeSelector');
+        const findFreeBtn = document.getElementById('findFreeBtn');
+        const freeProctorsResult = document.getElementById('freeProctorsResult');
+        // --- END: NEW DOM ELEMENTS FOR FREE PROCTOR FINDER ---
+
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeFilters();
+            initializeStats();
+            initializeChart();
+            initializeTicker();
+            initializeFreeProctorFinder(); // Hinzugefügte Funktion
+            loadUserPreferences();
+            setupEventListeners();
+            checkAchievements();
             
-            const percentage = Math.min((assignments / REQUIRED_LOAD) * 100, 100);
-            
-            let status, statusText;
-            if (percentage >= 100) {
-                status = 'complete';
-                statusText = 'Complete';
-            } else if (percentage >= 70) {
-                status = 'high';
-                statusText = 'On Track';
-            } else if (percentage >= 40) {
-                status = 'medium';
-                statusText = 'Partial';
-            } else {
-                status = 'low';
-                statusText = 'Low';
+            // --- START: MODIFIED CONFLICT CHECKING LOGIC ---
+            const detectedConflicts = findConflicts(proctorData);
+            if (detectedConflicts.length > 0) {
+                console.warn("SCHEDULING CONFLICTS DETECTED:", detectedConflicts);
+                displayConflicts(detectedConflicts);
             }
-            
+            // --- END: MODIFIED CONFLICT CHECKING LOGIC ---
+        });
+
+        // Filter Initialization
+        function initializeFilters() {
+            const labs = [...new Set(proctorData.map(item => item.lab).filter(Boolean))].sort();
+            const dates = [...new Set(proctorData.map(item => item.date))].sort();
+            const sessions = [...new Set(proctorData.map(item => item.session))].sort();
+
+            populateFilter('labFilter', labs);
+            populateFilter('dateFilter', dates);
+            populateFilter('sessionFilter', sessions);
+        }
+
+        function populateFilter(filterId, options) {
+            const select = document.getElementById(filterId);
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                select.appendChild(optionElement);
+            });
+        }
+
+        // Statistics Dashboard
+        function initializeStats() {
+            updateStatsDashboard(proctorData);
+        }
+
+        function updateStatsDashboard(data) {
+            const stats = calculateStatistics(data);
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value">${stats.totalProctors}</div>
+                    <div class="stat-label">Aktive Aufsichtspersonen</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-value">${stats.totalAssignments}</div>
+                    <div class="stat-label">Totale Aufsichten</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-value">${stats.activeLabs}</div>
+                    <div class="stat-label">Active Labs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">${stats.averageLoad}%</div>
+                    <div class="stat-label">Durchschnittliche Belastung</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-value">${stats.underloaded}</div>
+                    <div class="stat-label">Unterbelastet</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value">${stats.optimal}</div>
+                    <div class="stat-label">Optimale Belastung</div>
+                </div>
+            `;
+            statsGrid.innerHTML = statsHTML;
+        }
+
+        function calculateStatistics(data) {
+            const proctorCounts = {};
+            data.forEach(item => {
+                if (item.proctor && item.proctor.trim() !== '') {
+                    proctorCounts[item.proctor] = (proctorCounts[item.proctor] || 0) + 1;
+                }
+            });
+
+            const loads = Object.values(proctorCounts);
+            const totalProctors = Object.keys(proctorCounts).length;
+            const totalAssignments = data.filter(item => item.proctor && item.proctor.trim() !== '').length;
+            const activeLabs = new Set(data.map(item => item.lab).filter(Boolean)).size;
+            const averageLoad = loads.length > 0 ? Math.round((loads.reduce((a, b) => a + b, 0) / loads.length / CONFIG.REQUIRED_LOAD) * 100) : 0;
+            const underloaded = loads.filter(load => (load / CONFIG.REQUIRED_LOAD) < 0.7).length;
+            const optimal = loads.filter(load => {
+                const percentage = load / CONFIG.REQUIRED_LOAD;
+                return percentage >= 0.7 && percentage <= 1.0;
+            }).length;
+
             return {
-                assignments,
-                percentage,
-                status,
-                statusText,
-                required: REQUIRED_LOAD
+                totalProctors,
+                totalAssignments,
+                activeLabs,
+                averageLoad,
+                underloaded,
+                optimal
             };
         }
 
-        function createLoadIndicator(proctorName, useThermometer = false) {
-            const load = calculateProctorLoad(proctorName);
-            
-            if (useThermometer) {
-                return `
-                    <div class="load-indicator">
-                        <div class="thermometer">
-                            <div class="thermometer-fill ${load.status}" style="height: ${load.percentage}%"></div>
-                        </div>
-                        <div class="load-details">
-                            <div class="load-fraction">${load.assignments} / ${load.required}</div>
-                            <div class="load-percentage">${Math.round(load.percentage)}%</div>
-                            <div class="load-status ${load.status}">${load.statusText}</div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                return `
-                    <div class="load-indicator">
-                        <div class="progress-circle">
-                            <div class="progress-fill ${load.status}" style="height: ${load.percentage}%"></div>
-                            <div class="progress-text">${load.assignments}/${load.required}</div>
-                        </div>
-                        <div class="load-details">
-                            <div class="load-percentage">${Math.round(load.percentage)}% Complete</div>
-                            <div class="load-status ${load.status}">${load.statusText}</div>
-                        </div>
-                    </div>
-                `;
-            }
+        // Chart Initialization
+        function initializeChart() {
+            const ctx = document.getElementById('workloadChart').getContext('2d');
+            currentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: getChartData('distribution'),
+                options: getChartOptions('distribution')
+            });
         }
 
-        function searchProctor(query) {
-            if (!query.trim()) {
-                showWelcomeMessage();
-                exportBtn.disabled = true;
-                return;
-            }
+        function getChartData(type) {
+            const proctorCounts = {};
+            proctorData.forEach(item => {
+                if (item.proctor && item.proctor.trim() !== '') {
+                    proctorCounts[item.proctor] = (proctorCounts[item.proctor] || 0) + 1;
+                }
+            });
 
-            showLoading();
-            exportBtn.disabled = true;
-
-            setTimeout(() => {
-                let filteredResults;
-                
-                if (query.toLowerCase() === 'gju') {
-                    filteredResults = proctorData.filter(item => 
-                        item.proctor && item.proctor.trim() !== ''
-                    ).sort((a, b) => {
-                        const dateA = parseDateForSorting(a.date);
-                        const dateB = parseDateForSorting(b.date);
-                        
-                        if (dateA !== dateB) {
-                            return dateA - dateB;
-                        }
-                        
-                        return a.session.localeCompare(b.session);
+            switch(type) {
+                case 'distribution':
+                    const categories = { low: 0, medium: 0, high: 0, complete: 0 };
+                    Object.values(proctorCounts).forEach(count => {
+                        const percentage = (count / CONFIG.REQUIRED_LOAD) * 100;
+                        if (percentage >= 100) categories.complete++;
+                        else if (percentage >= 70) categories.high++;
+                        else if (percentage >= 40) categories.medium++;
+                        else categories.low++;
                     });
                     
-                    displayFullSchedule(filteredResults, query);
-                } else {
-                    filteredResults = proctorData.filter(item => 
-                        item.proctor && 
-                        item.proctor.trim() !== '' && 
-                        item.proctor.toLowerCase().includes(query.toLowerCase())
-                    );
+                    return {
+                        labels: ['Niedrige Belastung', 'Mittlere Belastung', 'Hohe Belastung', 'Vollständig'],
+                        datasets: [{
+                            data: [categories.low, categories.medium, categories.high, categories.complete],
+                            backgroundColor: [
+                                CONFIG.CHART_COLORS.orange,
+                                CONFIG.CHART_COLORS.yellow,
+                                CONFIG.CHART_COLORS.green,
+                                CONFIG.CHART_COLORS.purple
+                            ],
+                            borderWidth: 3,
+                            borderColor: '#fff'
+                        }]
+                    };
+                
+                case 'timeline':
+                    const dateData = {};
+                    proctorData.forEach(item => {
+                        if (item.proctor && item.proctor.trim() !== '') {
+                            const date = item.date.split(' ')[0];
+                            dateData[date] = (dateData[date] || 0) + 1;
+                        }
+                    });
                     
-                    displayResults(filteredResults, query);
+                    return {
+                        labels: Object.keys(dateData).sort(),
+                        datasets: [{
+                            label: 'Aufsichten pro Day',
+                            data: Object.values(dateData),
+                            backgroundColor: CONFIG.CHART_COLORS.blue,
+                            borderColor: CONFIG.CHART_COLORS.orange,
+                            borderWidth: 2,
+                            fill: true
+                        }]
+                    };
+                
+                case 'comparison':
+                    const topProctors = Object.entries(proctorCounts)
+                        .sort(([,a], [,b]) => b - a)
+                        .slice(0, 8);
+                    
+                    return {
+                        labels: topProctors.map(([name]) => name.split(' ')[0]),
+                        datasets: [{
+                            label: 'Aufsichten',
+                            data: topProctors.map(([,count]) => count),
+                            backgroundColor: CONFIG.CHART_COLORS.orange,
+                            borderColor: CONFIG.CHART_COLORS.blue,
+                            borderWidth: 2
+                        }]
+                    };
+                
+                default:
+                    return {};
+            }
+        }
+
+        function getChartOptions(type) {
+            const baseOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
                 }
-
-                exportBtn.disabled = filteredResults.length === 0;
-            }, 200);
-        }
-
-        function parseDateForSorting(dateStr) {
-            const months = {
-                'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
-                'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
             };
-            
-            const parts = dateStr.toLowerCase().replace('.', '').split(' ');
-            const day = parseInt(parts[0]);
-            const month = months[parts[1]] || 8;
-            
-            return month * 100 + day;
+
+            switch(type) {
+                case 'distribution':
+                    return {
+                        ...baseOptions,
+                        cutout: '60%',
+                        plugins: {
+                            ...baseOptions.plugins,
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((context.raw / total) * 100).toFixed(1);
+                                        return `${context.label}: ${context.raw} proctors (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    };
+                
+                case 'timeline':
+                    return {
+                        ...baseOptions,
+                        type: 'line',
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    };
+                
+                case 'comparison':
+                    return {
+                        ...baseOptions,
+                        type: 'bar',
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    };
+                
+                default:
+                    return baseOptions;
+            }
         }
 
-        function displayResults(results, query) {
-            if (results.length === 0) {
-                showNoResults(query);
+        // Ticker Functionality
+        function initializeTicker() {
+    updateTicker();
+    setInterval(updateTicker, 15000); // Update every 15 seconds
+}
+
+function updateTicker() {
+    const proctorCounts = {};
+    proctorData.forEach(item => {
+        if (item.proctor && item.proctor.trim() !== '') {
+            const proctorName = item.proctor.trim();
+            proctorCounts[proctorName] = (proctorCounts[proctorName] || 0) + 1;
+        }
+    });
+
+    const sortedProctors = Object.entries(proctorCounts).sort(([, a], [, b]) => b - a);
+    const tickerContentEl = document.getElementById('tickerContent');
+
+    if (sortedProctors.length === 0) {
+        tickerContentEl.innerHTML = '';
+        return;
+    }
+
+    const topRankedProctors = [];
+    let lastCount = -1;
+    let rank = -1;
+    const rankEmojis = ['🥇', '🥈', '🥉'];
+
+    for (const [proctor, count] of sortedProctors) {
+        if (count < lastCount) {
+            rank++;
+        }
+        if (rank === -1) {
+            rank = 0;
+        }
+        if (rank >= rankEmojis.length) {
+            break;
+        }
+        topRankedProctors.push({
+            proctor,
+            count,
+            rankEmoji: rankEmojis[rank]
+        });
+        lastCount = count;
+    }
+
+    const tickerItemsHTML = topRankedProctors.map(item => `
+        <span class="ticker-item">
+            <span class="ticker-rank">${item.rankEmoji}</span>
+            <span class="ticker-names">${item.proctor}</span>
+            <span class="ticker-count">${item.count} Aufsicht${item.count !== 1 ? 'en' : ''}</span>
+        </span>
+    `).join('');
+
+    // نقوم بتكرار المحتوى لضمان التمرير السلس
+    tickerContentEl.innerHTML = `
+        <span>${tickerItemsHTML}</span>
+        <span>${tickerItemsHTML}</span>
+    `;
+
+    // --- الجزء الجديد والمهم: حساب السرعة الديناميكي ---
+    const contentSpan = tickerContentEl.querySelector('span');
+    if (contentSpan) {
+        // سرعة التمرير بالبكسل في الثانية. يمكنك تعديل هذا الرقم لزيادة أو تقليل السرعة.
+        const PIXELS_PER_SECOND = 80; 
+
+        // نحصل على العرض الفعلي للمحتوى
+        const contentWidth = contentSpan.scrollWidth;
+
+        // حساب المدة المطلوبة للحفاظ على سرعة ثابتة
+        const duration = contentWidth / PIXELS_PER_SECOND;
+
+        // تطبيق مدة الأنيميشن المحسوبة مباشرة على العنصر
+        tickerContentEl.style.animationDuration = `${duration}s`;
+    }
+}
+
+
+        // Enhanced Search Functionality
+        function setupEventListeners() {
+            searchInput.addEventListener('input', handleSearch);
+            searchInput.addEventListener('keydown', handleSearchKeydown);
+            
+            // Filter listeners
+            ['labFilter', 'dateFilter', 'loadFilter', 'sessionFilter'].forEach(filterId => {
+                document.getElementById(filterId).addEventListener('change', applyFilters);
+            });
+            
+            // Close autocomplete when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-box')) {
+                    hideAutocomplete();
+                }
+            });
+
+            // --- START: NEW EVENT LISTENER FOR FREE PROCTOR FINDER ---
+            findFreeBtn.addEventListener('click', findAndDisplayFreeProctors);
+            // --- END: NEW EVENT LISTENER ---
+        }
+
+        function handleSearch(e) {
+            const query = e.target.value.trim();
+            updateSearchHistory(query);
+            
+            if (query.length > 0) {
+                showAutocomplete(query);
+                performSearch(query);
+            } else {
+                hideAutocomplete();
+                showWelcomeMessage();
+            }
+        }
+
+        function handleSearchKeydown(e) {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    performSearch(query);
+                    hideAutocomplete();
+                }
+            }
+        }
+
+        function showAutocomplete(query) {
+            const suggestions = generateSuggestions(query);
+            if (suggestions.length === 0) {
+                hideAutocomplete();
                 return;
             }
 
-            resultsCount.textContent = ` ${results.length} Aufsicht gefunden  ${results.length !== 1 ? 's' : ''} für "${query}"`;
+            const suggestionHTML = suggestions.map(suggestion => `
+                <div class="autocomplete-item" onclick="selectSuggestion('${suggestion.value}')">
+                    <span>${suggestion.icon}</span>
+                    <span>${suggestion.label}</span>
+                </div>
+            `).join('');
+
+            autocompleteDropdown.innerHTML = suggestionHTML;
+            autocompleteDropdown.style.display = 'block';
+        }
+
+        function generateSuggestions(query) {
+            const suggestions = [];
+            const lowerQuery = query.toLowerCase();
+
+            // Proctor suggestions
+            const proctors = [...new Set(proctorData.map(item => item.proctor).filter(Boolean))];
+            proctors.forEach(proctor => {
+                if (proctor.toLowerCase().includes(lowerQuery)) {
+                    suggestions.push({
+                        icon: '👤',
+                        label: proctor,
+                        value: proctor,
+                        type: 'proctor'
+                    });
+                }
+            });
+
+            // Lab suggestions
+            const labs = [...new Set(proctorData.map(item => item.lab).filter(Boolean))];
+            labs.forEach(lab => {
+                if (lab.toLowerCase().includes(lowerQuery)) {
+                    suggestions.push({
+                        icon: '🏢',
+                        label: `Lab ${lab}`,
+                        value: lab,
+                        type: 'lab'
+                    });
+                }
+            });
+
+            // Special commands
+            if ('gju'.includes(lowerQuery)) {
+                suggestions.push({
+                    icon: '🎓',
+                    label: 'Show full schedule (GJU)',
+                    value: 'GJU',
+                    type: 'command'
+                });
+            }
+
+            return suggestions.slice(0, 6);
+        }
+
+        function selectSuggestion(value) {
+            searchInput.value = value;
+            performSearch(value);
+            hideAutocomplete();
+        }
+
+        function hideAutocomplete() {
+            autocompleteDropdown.style.display = 'none';
+        }
+
+        // Enhanced Search Logic
+        function performSearch(query) {
+            showLoading();
             
-            // Group results by proctor to show load indicator once per proctor
-            const resultsByProctor = results.reduce((groups, item) => {
+            setTimeout(() => {
+                let results = [];
+                
+                if (query.toLowerCase() === 'gju') {
+                    results = proctorData.filter(item => item.proctor && item.proctor.trim() !== '');
+                } else {
+                    results = proctorData.filter(item => {
+                        if (!item.proctor || item.proctor.trim() === '') return false;
+                        
+                        const searchFields = [
+                            item.proctor,
+                            item.lab,
+                            item.date,
+                            item.session
+                        ].join(' ').toLowerCase();
+                        
+                        return searchFields.includes(query.toLowerCase());
+                    });
+                }
+                
+                filteredResults = results;
+                applyFilters();
+                updateStatsDashboard(filteredResults);
+                checkAchievements();
+                
+            }, CONFIG.ANIMATION_DURATION);
+        }
+
+        function applyFilters() {
+            const labFilter = document.getElementById('labFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const loadFilter = document.getElementById('loadFilter').value;
+            const sessionFilter = document.getElementById('sessionFilter').value;
+            
+            let filtered = [...filteredResults];
+            
+            if (labFilter) {
+                filtered = filtered.filter(item => item.lab === labFilter);
+            }
+            
+            if (dateFilter) {
+                filtered = filtered.filter(item => item.date === dateFilter);
+            }
+            
+            if (sessionFilter) {
+                filtered = filtered.filter(item => item.session === sessionFilter);
+            }
+            
+            if (loadFilter) {
+                const proctors = [...new Set(filtered.map(item => item.proctor))];
+                const filteredProctors = proctors.filter(proctor => {
+                    const load = calculateProctorLoad(proctor);
+                    return load.status === loadFilter;
+                });
+                filtered = filtered.filter(item => filteredProctors.includes(item.proctor));
+            }
+            
+            displayResults(filtered);
+        }
+
+        // Display Results
+        function displayResults(results) {
+            updateResultsHeader(results);
+            
+            switch(currentView) {
+                case 'cards':
+                    displayCardsView(results);
+                    break;
+                case 'table':
+                    displayTableView(results);
+                    break;
+                case 'timeline':
+                    displayTimelineView(results);
+                    break;
+            }
+        }
+
+        function updateResultsHeader(results) {
+            resultsCount.textContent = `${results.length} Aufsichten gefunden${results.length !== 1 ? '' : ''}`;
+            
+            const uniqueProctors = new Set(results.map(item => item.proctor)).size;
+            resultsMeta.textContent = `${uniqueProctors} Aufsichtsperson${uniqueProctors !== 1 ? 'en' : ''} • ${results.length} totale Aufsichten`;
+        }
+
+        function displayCardsView(results) {
+            if (results.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            // Group by proctor
+            const groupedResults = results.reduce((groups, item) => {
                 if (!groups[item.proctor]) {
                     groups[item.proctor] = [];
                 }
@@ -784,95 +2738,38 @@
                 return groups;
             }, {});
             
-            resultsList.innerHTML = Object.keys(resultsByProctor).map(proctorName => {
-                const proctorAssignments = resultsByProctor[proctorName];
+            const cardsHTML = Object.entries(groupedResults).map(([proctor, assignments]) => {
+                const load = calculateProctorLoad(proctor);
+                const initials = proctor.split(' ').map(word => word[0]).join('').toUpperCase();
+                
                 return `
-                    <div class="result-item">
-                        <div class="result-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">👤</span>
-                                <span class="detail-label">Proctor:</span>
-                                <span class="detail-value">${highlightMatch(proctorName, query)}</span>
+                    <div class="proctor-card">
+                        <div class="proctor-header">
+                            <div>
+                                <div class="proctor-name">${highlightMatch(proctor, searchInput.value)}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem;">${assignments.length} Aufsicht${assignments.length !== 1 ? 'en' : ''}</div>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📊</span>
-                                <span class="detail-label">Belastung:</span>
-                                <div class="detail-value">
-                                    ${createLoadIndicator(proctorName)}
-                                </div>
+                            <div class="proctor-initials">${initials}</div>
+                        </div>
+                        
+                        <div class="load-indicator">
+                            <div class="load-header">
+                                <span class="load-title">Fortschritt bei der Arbeitsbelastung</span>
+                                <span class="load-percentage ${load.status}">${Math.round(load.percentage)}%</span>
                             </div>
+                            <div class="load-bar">
+                                <div class="load-fill ${load.status}" style="width: ${load.percentage}%"></div>
+                            </div>
+                            <div class="load-status ${load.status}">${load.statusText} • ${load.assignments}/${load.required}</div>
                         </div>
-                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f0f0f0;">
-                            <h4 style="margin-bottom: 10px; color: ##FF8C00; font-size: 0.95rem;">Aufsichten (${proctorAssignments.length}):</h4>
-                            ${proctorAssignments.map(item => `
-                                <div style="padding: 8px 0; border-bottom: 1px solid #f8f9fa; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 0.9rem;">
-                                    <div><span style="color: #666;">📍</span> ${item.lab}</div>
-                                    <div><span style="color: #666;">📅</span> ${item.date}</div>
-                                    <div><span style="color: #666;">🎓</span> ${item.session}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function displayFullSchedule(results, query) {
-            resultsCount.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                    <span>📋 Complete Schedule - ${results.length} total assignments</span>
-                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 12px; font-size: 0.9rem;">Required: ${REQUIRED_LOAD} per proctor</span>
-                </div>
-            `;
-            
-            const groupedByDate = results.reduce((groups, item) => {
-                const date = item.date;
-                if (!groups[date]) {
-                    groups[date] = [];
-                }
-                groups[date].push(item);
-                return groups;
-            }, {});
-
-            const sortedDates = Object.keys(groupedByDate).sort((a, b) => 
-                parseDateForSorting(a) - parseDateForSorting(b)
-            );
-
-            resultsList.innerHTML = sortedDates.map(date => {
-                const dayItems = groupedByDate[date];
-                return `
-                    <div class="date-group">
-                        <div class="date-header">
-                            <span class="date-icon">📅</span>
-                            <h3 class="date-title">${date}</h3>
-                            <span class="date-count">${dayItems.length} assignments</span>
-                        </div>
-                        <div class="date-items">
-                            ${dayItems.map(item => `
-                                <div class="result-item compact">
-                                    <div class="result-details">
-                                        <div class="detail-item">
-                                            <span class="detail-icon">👤</span>
-                                            <span class="detail-label">Proctor:</span>
-                                            <span class="detail-value">${item.proctor}</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-icon">📍</span>
-                                            <span class="detail-label">Lab:</span>
-                                            <span class="detail-value">${item.lab}</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-icon">🎓</span>
-                                            <span class="detail-label">Session:</span>
-                                            <span class="detail-value">${item.session}</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-icon">📊</span>
-                                            <span class="detail-label">Load:</span>
-                                            <div class="detail-value">
-                                                ${createLoadIndicator(item.proctor, true)}
-                                            </div>
-                                        </div>
+                        
+                        <div class="assignments-list">
+                            ${assignments.map(assignment => `
+                                <div class="assignment-item">
+                                    <div class="assignment-icon">🏢</div>
+                                    <div class="assignment-details">
+                                        <div class="assignment-primary">${assignment.lab} • ${assignment.session}</div>
+                                        <div class="assignment-secondary">📅 ${assignment.date}</div>
                                     </div>
                                 </div>
                             `).join('')}
@@ -880,239 +2777,868 @@
                     </div>
                 `;
             }).join('');
+            
+            resultsContent.innerHTML = `<div class="results-grid">${cardsHTML}</div>`;
         }
 
+        function displayTableView(results) {
+            if (results.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            const tableHTML = `
+                <div style="overflow-x: auto; padding: 30px;">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('proctor')">
+                                    Proctor <span class="sort-arrow">↕️</span>
+                                </th>
+                                <th onclick="sortTable('lab')">
+                                    Lab <span class="sort-arrow">↕️</span>
+                                </th>
+                                <th onclick="sortTable('date')">
+                                    Date <span class="sort-arrow">↕️</span>
+                                </th>
+                                <th onclick="sortTable('session')">
+                                    Session <span class="sort-arrow">↕️</span>
+                                </th>
+                                <th onclick="sortTable('load')">
+                                    Load <span class="sort-arrow">↕️</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${results.map(item => {
+                                const load = calculateProctorLoad(item.proctor);
+                                return `
+                                    <tr>
+                                        <td><strong>${highlightMatch(item.proctor, searchInput.value)}</strong></td>
+                                        <td>🏢 ${item.lab}</td>
+                                        <td>📅 ${item.date}</td>
+                                        <td>🎓 ${item.session}</td>
+                                        <td>
+                                            <span class="load-status ${load.status}">
+                                                ${Math.round(load.percentage)}% (${load.assignments}/${load.required})
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = tableHTML;
+        }
+
+        function displayTimelineView(results) {
+            if (results.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            // Group by date
+            const dateGroups = results.reduce((groups, item) => {
+                const date = item.date.split(' ')[0];
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(item);
+                return groups;
+            }, {});
+            
+            const timelineHTML = Object.entries(dateGroups)
+                .sort(([a], [b]) => a.localeCompare(b))
+                .map(([date, items]) => `
+                    <div style="margin-bottom: 30px; background: var(--gradient-card); border-radius: 15px; overflow: hidden; border: 2px solid var(--border-light);">
+                        <div style="background: var(--gradient-primary); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0;">📅 ${date}</h3>
+                            <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 15px; font-size: 0.9rem;">
+                                ${items.length} Aufsichten
+                            </span>
+                        </div>
+                        <div style="padding: 20px;">
+                            ${items.map(item => `
+                                <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-light);">
+                                    <div style="background: var(--gradient-primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 0.9rem;">
+                                        ${item.date.split(' ')[1]}
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: bold; margin-bottom: 2px;">${item.proctor}</div>
+                                        <div style="color: var(--text-secondary); font-size: 0.9rem;">🏢 ${item.lab} • 🎓 ${item.session}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            
+            resultsContent.innerHTML = `<div style="padding: 30px;">${timelineHTML}</div>`;
+        }
+
+        // Utility Functions
+        function calculateProctorLoad(proctorName) {
+            const assignments = proctorData.filter(item => item.proctor === proctorName).length;
+            const percentage = Math.min((assignments / CONFIG.REQUIRED_LOAD) * 100, 100);
+            
+            let status, statusText;
+            if (percentage >= 100) {
+                status = 'complete';
+                statusText = 'Vollständig';
+            } else if (percentage >= 70) {
+                status = 'high';
+                statusText = 'Auf Kurs';
+            } else if (percentage >= 40) {
+                status = 'medium';
+                statusText = 'Partiell';
+            } else {
+                status = 'low';
+                statusText = 'Gering';
+            }
+            
+            return { assignments, percentage, status, statusText, required: CONFIG.REQUIRED_LOAD };
+        }
+        function findConflicts(data) {
+    const conflicts = [];
+    const assignmentsByTime = {};
+
+    // First, group all assignments by date and time
+    data.forEach((assignment, index) => {
+        if (!assignment.date || !assignment.proctor) return;
+        
+        const timeSlot = assignment.date.trim(); // "01. Jan 08:30"
+        
+        if (!assignmentsByTime[timeSlot]) {
+            assignmentsByTime[timeSlot] = [];
+        }
+        assignmentsByTime[timeSlot].push({ ...assignment, originalIndex: index });
+    });
+
+    // Now, check each time slot for duplicate proctors
+    for (const timeSlot in assignmentsByTime) {
+        const proctorsInSlot = {};
+        const slotAssignments = assignmentsByTime[timeSlot];
+        
+        slotAssignments.forEach(assignment => {
+            const proctorName = assignment.proctor.trim();
+            if (!proctorsInSlot[proctorName]) {
+                proctorsInSlot[proctorName] = [];
+            }
+            proctorsInSlot[proctorName].push(assignment);
+        });
+        
+        // If a proctor appears more than once, it's a conflict
+        for (const proctorName in proctorsInSlot) {
+            if (proctorsInSlot[proctorName].length > 1) {
+                conflicts.push({
+                    proctor: proctorName,
+                    time: timeSlot,
+                    assignments: proctorsInSlot[proctorName] // List of conflicting assignments
+                });
+            }
+        }
+    }
+    
+    return conflicts;
+}
+        // --- START: NEW FUNCTION TO DISPLAY CONFLICTS ---
+        function displayConflicts(conflicts) {
+            if (!conflicts || conflicts.length === 0) {
+                conflictsContainer.style.display = 'none';
+                return;
+            }
+
+            const conflictsHTML = conflicts.map(conflict => {
+                const labs = conflict.assignments.map(a => a.lab).join(' und ');
+                return `
+                    <div class="conflict-item">
+                        <div class="conflict-details">
+                            <p>
+                                <strong>${conflict.proctor}</strong> hat einen Zeitkonflikt.
+                            </p>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                 Doppelt gebucht um ${conflict.time} in den Labs: ${labs}
+                            </p>
+                        </div>
+                        <div class="conflict-action">
+                            <a href="#" onclick="jumpToProctor('${conflict.proctor}')">Zum Prüfer springen</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            conflictsList.innerHTML = conflictsHTML;
+            conflictsContainer.style.display = 'block';
+        }
+
+        // --- START: NEW HELPER FUNCTION TO JUMP TO A PROCTOR ---
+        function jumpToProctor(proctorName) {
+            event.preventDefault(); // Prevent the link from navigating
+            searchInput.value = proctorName;
+            performSearch(proctorName);
+            
+            // Scroll to the top of the results for better UX
+            const controlPanel = document.querySelector('.control-panel');
+            if(controlPanel) {
+                 controlPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        // --- END: NEW HELPER FUNCTIONS ---
+
+
         function highlightMatch(text, query) {
-            if (!query) return text;
+            if (!query || !text) return text;
             const regex = new RegExp(`(${query})`, 'gi');
             return text.replace(regex, '<mark style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">$1</mark>');
         }
 
         function showWelcomeMessage() {
-            resultsCount.textContent = 'Ready to search';
-            resultsList.innerHTML = `
-                <div class="welcome-message">
-                    <div class="welcome-icon">👋</div>
-                    <h3>Herzlich willkommen!</h3>
-                    <p>Gib die Abkürzung GJU ein, um den vollständingen Prüfungsplan zu sehen.</p>
+            resultsCount.textContent = 'Bereit zum Entdecken';
+            resultsMeta.textContent = `${proctorData.length} Verfügbare Aufsichten insgesamt`;
+            resultsContent.innerHTML = `
+                <div class="welcome-container">
+                    <div class="welcome-icon">🚀</div>
+                    <h2 class="welcome-title">Willkommen im Verbesserten System!</h2>
+                    <p class="welcome-subtitle">Beginnen Sie mit der Suche nach dem Namenkürzel einer Aufsichtsperson, geben Sie „...“ ein, um den vollständigen Aufsichtsplan zu erhalten, oder verwenden Sie die erweiterten Filter oben. Entdecken Sie interaktive Diagramme, verdienen Sie Erfolge und entdecken Sie leistungsstarke Analysen!</p>
                 </div>
             `;
         }
 
         function showLoading() {
-            resultsCount.textContent = 'Searching...';
-            resultsList.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Searching for assignments...</p>
+            resultsContent.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                    <div class="loading-skeleton" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 20px;"></div>
+                    <h3>Analysieren von Daten...</h3>
+                    <p>Bearbeitung Ihrer Anfrage mit fortschrittlichen Algorithmen</p>
                 </div>
             `;
         }
 
-        function showNoResults(query) {
-            resultsCount.textContent = `Keine Aufsichten für "${query}" gefunden`;
-            resultsList.innerHTML = `
-                <div class="no-results">
-                    <div class="no-results-icon">🤷‍♂️</div>
-                    <h3>Keine Aufsichten gefunden</h3>
-                    <p>Kein Aufsichtsperson mit der Namenskürzel gefunden "${query}"</p>
+        function showNoResults() {
+            resultsContent.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                    <div style="font-size: 5rem; margin-bottom: 20px;">🤷‍♂️</div>
+                    <h3>Keine Ergebnisse gefunden</h3>
+                    <p>Versuchen Sie, Ihre Suchbegriffe oder Filter anzupassen</p>
                 </div>
             `;
         }
 
+        // View Management
+        function switchView(viewType) {
+            currentView = viewType;
+            
+            // Update active button
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.view === viewType) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Re-display results in new view
+            displayResults(filteredResults);
+            
+            // Save preference
+            userPreferences.preferredView = viewType;
+            saveUserPreferences();
+        }
+
+        function switchChart(chartType) {
+            // Update active tab
+            document.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update chart
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            
+            const ctx = document.getElementById('workloadChart').getContext('2d');
+            const chartConfig = {
+                type: chartType === 'distribution' ? 'doughnut' : chartType === 'timeline' ? 'line' : 'bar',
+                data: getChartData(chartType),
+                options: getChartOptions(chartType)
+            };
+            
+            currentChart = new Chart(ctx, chartConfig);
+        }
+
+        // Achievement System
+        function checkAchievements() {
+            const newAchievements = [];
+            
+            // Search achievements
+            if (searchHistory.length >= 5) {
+                newAchievements.push({
+                    id: 'explorer',
+                    title: '🔍 Datenforscher',
+                    description: 'Performed 5 different searches',
+                    icon: '🔍'
+                });
+            }
+            
+            // View achievements
+            const uniqueProctors = new Set(filteredResults.map(item => item.proctor));
+            if (uniqueProctors.size >= 10) {
+                newAchievements.push({
+                    id: 'networker',
+                    title: '👥 Großartiger Netzwerker',
+                    description: 'Discovered 10+ different proctors',
+                    icon: '👥'
+                });
+            }
+            
+            // Perfect load achievement
+            const perfectLoads = Array.from(uniqueProctors).filter(proctor => {
+                const load = calculateProctorLoad(proctor);
+                return load.percentage === 100;
+            });
+            
+            if (perfectLoads.length >= 3) {
+                newAchievements.push({
+                    id: 'perfectionist',
+                    title: '🎯 Perfektionist',
+                    description: 'Found 3+ proctors with perfect load',
+                    icon: '🎯'
+                });
+            }
+            
+            // Add new achievements
+            newAchievements.forEach(achievement => {
+                if (!achievements.find(a => a.id === achievement.id)) {
+                    achievements.push(achievement);
+                    showNotification(`🏆 Errungenschaft freigeschaltet: ${achievement.title}!`, 'Erfolg');
+                }
+            });
+            
+            updateAchievementsPanel();
+        }
+
+        function updateAchievementsPanel() {
+            const achievementsList = document.getElementById('achievementsList');
+            if (achievements.length === 0) {
+                achievementsList.innerHTML = `
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Start Exploring!</div>
+                            <div class="achievement-desc">Use the search and filters to unlock achievements</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                achievementsList.innerHTML = achievements.map(achievement => `
+                    <div class="achievement-item">
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">${achievement.title}</div>
+                            <div class="achievement-desc">${achievement.description}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // User Preferences
+        function loadUserPreferences() {
+            const saved = localStorage.getItem('proctorSchedulePreferences');
+            if (saved) {
+                userPreferences = JSON.parse(saved);
+                
+                // Apply saved view
+                if (userPreferences.preferredView) {
+                    switchView(userPreferences.preferredView);
+                }
+                
+                // Load search history
+                if (userPreferences.searchHistory) {
+                    searchHistory = userPreferences.searchHistory;
+                }
+                
+                // Load achievements
+                if (userPreferences.achievements) {
+                    achievements = userPreferences.achievements;
+                    updateAchievementsPanel();
+                }
+            }
+        }
+
+        function saveUserPreferences() {
+            userPreferences.searchHistory = searchHistory;
+            userPreferences.achievements = achievements;
+            localStorage.setItem('proctorSchedulePreferences', JSON.stringify(userPreferences));
+        }
+
+        function updateSearchHistory(query) {
+            if (query && query.length > 2 && !searchHistory.includes(query)) {
+                searchHistory.unshift(query);
+                searchHistory = searchHistory.slice(0, 10); // Keep last 10 searches
+                saveUserPreferences();
+            }
+        }
+
+        // Action Functions
         function clearSearch() {
             searchInput.value = '';
+            filteredResults = [];
+            
+            // Reset all filters
+            document.getElementById('labFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('loadFilter').value = '';
+            document.getElementById('sessionFilter').value = '';
+            
             showWelcomeMessage();
-            exportBtn.disabled = true;
+            updateStatsDashboard(proctorData);
+            hideAutocomplete();
             searchInput.focus();
         }
 
-        function exportResultAsImage() {
-            const resultsContainer = document.getElementById('resultsContainer');
-            const resultsList = document.getElementById('resultsList');
+        function exportResults() {
+            const resultsContainer = document.querySelector('.results-container');
             const exportBtn = document.getElementById('exportBtn');
             
             exportBtn.disabled = true;
-            exportBtn.innerHTML = '<span>⏳</span><span>Generating...</span>';
+            exportBtn.innerHTML = '⏳ Generating...';
             
-            // Store original styles
-            const originalMaxHeight = resultsList.style.maxHeight;
-            const originalOverflow = resultsList.style.overflow;
+            const options = {
+                backgroundColor: '#ffffff',
+                scale: 3,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                letterRendering: true,
+                onclone: function(clonedDoc) {
+                    // Enhance cloned document for better rendering
+                    const style = clonedDoc.createElement('style');
+                    style.textContent = `
+                        * {
+                            -webkit-font-smoothing: antialiased !important;
+                            -moz-osx-font-smoothing: grayscale !important;
+                        }
+                        .results-container {
+                            box-shadow: none !important;
+                        }
+                    `;
+                    clonedDoc.head.appendChild(style);
+                }
+            };
             
-            // Temporarily remove height restrictions to capture all content
-            resultsList.style.maxHeight = 'none';
-            resultsList.style.overflow = 'visible';
+            html2canvas(resultsContainer, options).then(canvas => {
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '-');
+                const query = searchInput.value.trim() || 'schedule';
+                link.download = `enhanced_schedule_${query}_${timestamp}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('📸Hochwertiges Bild erfolgreich exportiert!', 'Erfolg');
+                
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = '📸 Export';
+            }).catch(error => {
+                console.error('Export failed:', error);
+                showNotification('❌ Export fehlgeschlagen. Bitte versuchen Sie es erneut.', 'Fehler');
+                
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = '📸 Export';
+            });
+        }
+
+        function generateReport() {
+            const stats = calculateStatistics(filteredResults);
+            const reportData = {
+                timestamp: new Date().toISOString(),
+                query: searchInput.value || 'All data',
+                totalResults: filteredResults.length,
+                statistics: stats,
+                topPerformers: getTopPerformers(),
+                recommendations: generateRecommendations()
+            };
             
-            // Scroll to top and wait for rendering
-            window.scrollTo(0, 0);
-            resultsContainer.scrollTop = 0;
+            const reportText = `
+PRÜFUNGSAUFSICHTSPLAN ANALYSIS REPORT
+Generated: ${new Date().toLocaleString()}
+Query: ${reportData.query}
+
+OVERVIEW:
+- Total Assignments: ${reportData.totalResults}
+- Active Proctors: ${stats.totalProctors}
+- Active Labs: ${stats.activeLabs}
+- Average Load: ${stats.averageLoad}%
+
+TOP PERFORMERS:
+${reportData.topPerformers.map((p, i) => `${i + 1}. ${p.name} (${p.assignments} Aufsichten)`).join('\n')}
+
+RECOMMENDATIONS:
+${reportData.recommendations.join('\n')}
+
+SYSTEM INSIGHTS:
+- Load Distribution: ${stats.underloaded} underloaded, ${stats.optimal} optimal
+- Coverage Analysis: ${((stats.totalAssignments / (stats.totalProctors * CONFIG.REQUIRED_LOAD)) * 100).toFixed(1)}% of total capacity used
+            `.trim();
+            
+            const blob = new Blob([reportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `schedule_report_${new Date().toISOString().slice(0, 10)}.txt`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📋 Detailed report generated!', 'success');
+        }
+
+        function getTopPerformers() {
+            const proctorCounts = {};
+            filteredResults.forEach(item => {
+                if (item.proctor && item.proctor.trim() !== '') {
+                    proctorCounts[item.proctor] = (proctorCounts[item.proctor] || 0) + 1;
+                }
+            });
+            
+            return Object.entries(proctorCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5)
+                .map(([name, assignments]) => ({ name, assignments }));
+        }
+
+        function generateRecommendations() {
+            const recommendations = [];
+            const stats = calculateStatistics(filteredResults);
+            
+            if (stats.underloaded > stats.optimal) {
+                recommendations.push('• Erwägen Sie eine Neuverteilung der Aufsichten, um die Arbeitsbelastung auszugleichen.');
+            }
+            
+            if (stats.averageLoad < 70) {
+                recommendations.push('• Die Gesamtauslastung der Kapazitäten ist gering - Gelegenheit zur Optimierung');
+            }
+            
+            if (stats.activeLabs < 4) {
+                recommendations.push('• Erwägen Sie die Nutzung zusätzlicher Labs für eine bessere Verteilung');
+            }
+            
+            if (recommendations.length === 0) {
+                recommendations.push('• Der aktuelle Aufsichtsplan scheint ausgewogen zu sein');
+            }
+            
+            return recommendations;
+        }
+
+        function exportToCSV() {
+            const headers = ['Proctor', 'Lab', 'Date', 'Session', 'Load_Percentage', 'Load_Status'];
+            const csvData = [headers.join(',')];
+            
+            filteredResults.forEach(item => {
+                const load = calculateProctorLoad(item.proctor);
+                const row = [
+                    `"${item.proctor}"`,
+                    `"${item.lab}"`,
+                    `"${item.date}"`,
+                    `"${item.session}"`,
+                    Math.round(load.percentage),
+                    `"${load.statusText}"`
+                ];
+                csvData.push(row.join(','));
+            });
+            
+            const blob = new Blob([csvData.join('\n')], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `schedule_data_${new Date().toISOString().slice(0, 10)}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📄 CSV-Daten erfolgreich exportiert!', 'Erfolg');
+        }
+
+        function printSchedule() {
+            const printWindow = window.open('', '_blank');
+            const printContent = `
+                <html>
+                <head>
+                    <title>Aufsichtsplan</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .stats { display: flex; justify-content: space-around; margin-bottom: 30px; }
+                        .stat { text-align: center; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>🎓 Prüfungsaufsichtsplan</h1>
+                        <p>Generated: ${new Date().toLocaleString()}</p>
+                        <p>Query: ${searchInput.value || 'Complete Schedule'}</p>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <strong>${filteredResults.length}</strong><br>
+                            Total Assignments
+                        </div>
+                        <div class="stat">
+                            <strong>${new Set(filteredResults.map(i => i.proctor)).size}</strong><br>
+                            Active Proctors
+                        </div>
+                        <div class="stat">
+                            <strong>${new Set(filteredResults.map(i => i.lab)).size}</strong><br>
+                            Active Labs
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Proctor</th>
+                                <th>Lab</th>
+                                <th>Date</th>
+                                <th>Session</th>
+                                <th>Load</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredResults.map(item => {
+                                const load = calculateProctorLoad(item.proctor);
+                                return `
+                                    <tr>
+                                        <td>${item.proctor}</td>
+                                        <td>${item.lab}</td>
+                                        <td>${item.date}</td>
+                                        <td>${item.session}</td>
+                                        <td>${Math.round(load.percentage)}%</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(printContent);
+            printWindow.document.close();
             
             setTimeout(() => {
-                const options = {
-                    backgroundColor: '#ffffff',
-                    scale: 3, // Higher scale for better quality
-                    useCORS: true,
-                    allowTaint: true,
-                    logging: false,
-                    scrollX: 0,
-                    scrollY: 0,
-                    letterRendering: true, // Better text rendering
-                    onclone: function(clonedDoc) {
-                        // Enhance the cloned document for better rendering
-                        const clonedResultsList = clonedDoc.getElementById('resultsList');
-                        if (clonedResultsList) {
-                            clonedResultsList.style.maxHeight = 'none';
-                            clonedResultsList.style.overflow = 'visible';
-                        }
-                        
-                        // Add comprehensive styling to ensure proper rendering
-                        const style = clonedDoc.createElement('style');
-                        style.textContent = `
-                            * {
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-                                -webkit-font-smoothing: antialiased !important;
-                                -moz-osx-font-smoothing: grayscale !important;
-                                text-rendering: optimizeLegibility !important;
-                            }
-                            
-                            .results-header {
-                                background: ##FF8C00 !important;
-                                background: -webkit-linear-gradient(135deg, #FF8C00, #87CEEB) !important;
-                                background: linear-gradient(135deg, #FF8C00, #87CEEB) !important;
-                                color: white !important;
-                            }
-                            
-                            .date-header {
-                                background: #f8f9ff !important;
-                                background: -webkit-linear-gradient(135deg, #f8f9ff, #e8ecff) !important;
-                                background: linear-gradient(135deg, #f8f9ff, #e8ecff) !important;
-                            }
-                            
-                            .date-title {
-                                color: #FF8C00 !important;
-                            }
-                            
-                            .date-count {
-                                background: #FF8C00 !important;
-                                color: white !important;
-                            }
-                            
-                            .detail-value {
-                                color: #333 !important;
-                                font-weight: 500 !important;
-                            }
-                            
-                            .detail-label {
-                                color: #666 !important;
-                                font-weight: 600 !important;
-                            }
-                            
-                            .clear-btn, .export-btn {
-                                background: rgba(255,255,255,0.2) !important;
-                                color: white !important;
-                                border: 1px solid rgba(255,255,255,0.3) !important;
-                            }
-                            
-                            .result-item {
-                                border-bottom: 1px solid #f0f0f0 !important;
-                            }
-                            
-                            .results-container {
-                                background: white !important;
-                                box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
-                            }
-                        `;
-                        clonedDoc.head.appendChild(style);
-                        
-                        // Force color rendering for all text elements
-                        const allTextElements = clonedDoc.querySelectorAll('*');
-                        allTextElements.forEach(el => {
-                            const computedStyle = window.getComputedStyle(el);
-                            if (computedStyle.color) {
-                                el.style.color = computedStyle.color;
-                            }
-                            if (computedStyle.backgroundColor && computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)') {
-                                el.style.backgroundColor = computedStyle.backgroundColor;
-                            }
-                        });
-                    }
-                };
+                printWindow.print();
+            }, 250);
+        }
 
-                html2canvas(resultsContainer, options).then(canvas => {
-                    // Restore original styles
-                    resultsList.style.maxHeight = originalMaxHeight;
-                    resultsList.style.overflow = originalOverflow;
-                    
-                    // Enhance canvas quality
-                    const ctx = canvas.getContext('2d');
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    
-                    // Create and download the image with maximum quality
-                    const link = document.createElement('a');
-                    const searchQuery = searchInput.value.trim() || 'schedule';
-                    const timestamp = new Date().toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '-');
-                    link.download = `aufsichtsplan_${searchQuery}_${timestamp}.png`;
-                    
-                    // Use maximum PNG quality
-                    link.href = canvas.toDataURL('image/png', 1.0);
-                    
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    showNotification('✅ High-quality image saved successfully!', 'success');
-                    
-                    exportBtn.disabled = false;
-                    exportBtn.innerHTML = '<span>📷</span><span>Als Bild speichern</span>';
-                    
-                }).catch(error => {
-                    console.error('Error generating image:', error);
-                    
-                    // Restore original styles
-                    resultsList.style.maxHeight = originalMaxHeight;
-                    resultsList.style.overflow = originalOverflow;
-                    
-                    showNotification('❌ Error saving image. Please try again.', 'error');
-                    
-                    exportBtn.disabled = false;
-                    exportBtn.innerHTML = '<span>📷</span><span>Als Bild speichern</span>';
-                });
-            }, 300); // Slightly longer delay for better rendering
+        function sortTable(column) {
+            // Implementation for table sorting
+            const table = document.querySelector('.results-table');
+            if (!table) return;
+            
+            // Add sorting logic here
+            showNotification(`🔄 Sorted by ${column}`, 'success');
+        }
+
+        function toggleAchievements() {
+            const panel = document.getElementById('achievementsPanel');
+            panel.classList.toggle('open');
+        }
+
+        function showQuickHelp() {
+            const helpText = `
+🚀 SCHNELLHILFE-LEITFADEN
+
+🔍 SUCHTIPS:
+• Gib Namen der Aufsichtspersonen, Labore oder Daten ein
+• Nutze "...", um den vollständigen Zeitplan zu sehen
+• Probiere Teilübereinstimmungen (z.B. "Amin" oder "M121")
+
+🎛️ FILTER:
+• Kombiniere mehrere Filter für präzise Ergebnisse
+• Ladestatus: Niedrig (<40%), Mittel (40-70%), Hoch (70-100%), Vollständig (100%+)
+
+🗓️ VERFÜGBARE FINDEN:
+• Wähle einen Zeitpunkt aus dem neuen Panel am Seitenende.
+• Klicke auf "Verfügbare finden", um eine Liste aller unbesetzten Aufsichtspersonen für diesen Slot zu erhalten.
+
+📊 ANSICHTEN:
+• Karten: Detaillierte Informationen zur Aufsicht mit Arbeitsauslastung
+• Tabelle: Sortierbare Daten im Tabellenformat
+• Zeitplan: Chronologische Übersicht
+
+🏆 ERFOLGE:
+• Entdecke verschiedene Suchanfragen, um Belohnungen freizuschalten
+• Öffne das Erfolgs-Panel (Trophäen-Symbol)
+
+📸 EXPORT-OPTIONEN:
+• Export: Hochwertiges Bild der aktuellen Ansicht
+• Bericht: Detaillierte Textanalyse
+• CSV: Rohdaten für externe Tools
+• Drucken: Druckoptimiertes Format
+
+⌨️ TASTENKÜRZEL:
+• Enter: Suche ausführen
+• Esc: Suche zurücksetzen/Panels schließen
+            `;
+            
+            alert(helpText);
         }
 
         function showNotification(message, type = 'success') {
-            exportNotification.textContent = message;
-            exportNotification.className = `export-notification ${type} show`;
+            const notification = document.getElementById('notification');
+            if (!notification) return; // Guard clause
+            const text = document.getElementById('notificationText');
+            
+            text.textContent = message;
+            notification.className = `notification ${type} show`;
             
             setTimeout(() => {
-                exportNotification.classList.remove('show');
-            }, 3000);
+                notification.classList.remove('show');
+            }, 4000);
         }
 
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            const query = e.target.value.trim();
-            
-            searchTimeout = setTimeout(() => {
-                searchProctor(query);
-            }, 300);
-        });
+        // --- START: NEW FUNCTIONS FOR FREE PROCTOR FINDER ---
 
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                clearTimeout(searchTimeout);
-                searchProctor(e.target.value.trim());
+        /**
+         * Initializes the free proctor finder feature by populating the time selector.
+         */
+        function initializeFreeProctorFinder() {
+            const timeSlots = [...new Set(proctorData.map(item => item.date).filter(Boolean))].sort();
+            populateFilter('freeTimeSelector', timeSlots);
+        }
+
+        /**
+         * Finds and displays proctors who are not assigned at the selected time.
+         */
+        function findAndDisplayFreeProctors() {
+            const selectedTime = freeTimeSelector.value;
+            
+            if (!selectedTime) {
+                freeProctorsResult.style.display = 'block';
+                freeProctorsResult.innerHTML = `<p style="color: var(--error); text-align: center; padding: 20px 0;">Bitte wählen Sie zuerst einen Zeitpunkt aus.</p>`;
+                return;
+            }
+
+            // 1. Get a unique list of all proctors
+            const allProctors = [...new Set(proctorData.map(item => item.proctor).filter(Boolean))];
+
+            // 2. Get a list of proctors who are busy at the selected time
+            const busyProctors = new Set(
+                proctorData
+                    .filter(item => item.date === selectedTime && item.proctor)
+                    .map(item => item.proctor)
+            );
+
+            // 3. Determine who is free by filtering the 'allProctors' list
+            const freeProctors = allProctors.filter(proctor => !busyProctors.has(proctor));
+
+            // 4. Display the results
+            let html = `<h3>Verfügbare Aufsichtspersonen für ${selectedTime}</h3>`;
+            if (freeProctors.length > 0) {
+                html += '<ul class="free-proctor-list">';
+                freeProctors.forEach(proctor => {
+                    html += `<li class="free-proctor-item">${proctor}</li>`;
+                });
+                html += '</ul>';
+            } else {
+                html += '<p style="text-align: center; padding: 20px 0;">Alle Aufsichtspersonen sind zu diesem Zeitpunkt entweder beschäftigt oder es wurden keine freien Personen gefunden.</p>';
+            }
+
+            freeProctorsResult.innerHTML = html;
+            freeProctorsResult.style.display = 'block';
+        }
+
+        // --- END: NEW FUNCTIONS FOR FREE PROCTOR FINDER ---
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideAutocomplete();
+                const panel = document.getElementById('achievementsPanel');
+                if (panel.classList.contains('open')) {
+                    panel.classList.remove('open');
+                }
             }
         });
 
-        clearBtn.addEventListener('click', clearSearch);
-        exportBtn.addEventListener('click', exportResultAsImage);
+        // Initialize welcome state
+        showWelcomeMessage();
+         (() => {
+        const themeToggle = document.getElementById('theme-toggle');
+        // We need to get the chart instance later, so we will look for it when needed
+        let workloadChartInstance = null; 
 
-        document.addEventListener('DOMContentLoaded', () => {
-            searchInput.focus();
-            exportBtn.disabled = true;
+        // Function to apply the theme (light or dark)
+        const applyTheme = (theme) => {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+
+            // Update the chart colors if the chart has been initialized
+            if (window.currentChart) {
+                updateChartTheme(window.currentChart, theme);
+            }
+        };
+
+        // Function to update chart colors based on the theme
+        const updateChartTheme = (chart, theme) => {
+            if (!chart) return;
+            
+            const isDark = theme === 'dark';
+            const textColor = isDark ? 'rgba(237, 242, 247, 0.8)' : '#64748b';
+            const gridColor = isDark ? 'rgba(74, 85, 104, 0.2)' : '#e2e8f0';
+
+            // Update general options
+            chart.options.plugins.legend.labels.color = textColor;
+
+            // Update scales if they exist (for bar/line charts)
+            if (chart.options.scales) {
+                Object.values(chart.options.scales).forEach(scale => {
+                    if (scale.ticks) {
+                        scale.ticks.color = textColor;
+                    }
+                    if (scale.grid) {
+                        scale.grid.color = gridColor;
+                    }
+                });
+            }
+            chart.update();
+        };
+
+        // Event listener for the toggle button
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            localStorage.setItem('theme', newTheme); // Save the new theme preference
+            applyTheme(newTheme);
         });
+
+        // Immediately apply the saved theme on page load
+        const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light
+        applyTheme(savedTheme);
+
+        // Since your chart is initialized later, we override the switchChart function
+        // to also apply the theme when a new chart is created.
+        const originalSwitchChart = window.switchChart;
+        window.switchChart = function(...args) {
+            // Call the original function first
+            originalSwitchChart.apply(this, args);
+            // Now, apply the current theme to the newly created chart
+            const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            if (window.currentChart) {
+                updateChartTheme(window.currentChart, currentTheme);
+            }
+        };
+
+    })();
     </script>
 </body>
 </html>
